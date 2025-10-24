@@ -1,32 +1,104 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Check } from "lucide-react"
+"use client";
+
+import Link from "next/link";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Check } from "lucide-react";
 
 export default function HomePage() {
   return (
     <div className="flex flex-col">
-      {/* Hero Section */}
+
+      {/*  HERO SECTION */}
       <section className="relative overflow-hidden bg-gradient-to-b from-gray-50 to-white py-20 sm:py-32">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-medium text-blue-700">
-              <span className="h-2 w-2 rounded-full bg-blue-500"></span>
-              Ahora con IA integrada
+          <div className="grid items-center gap-16 lg:grid-cols-2">
+
+            {/* Texto */}
+            <div className="text-center lg:text-left">
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-medium text-blue-700">
+                <span className="h-2 w-2 rounded-full bg-blue-500"></span>
+                Ahora con IA integrada
+              </div>
+
+              <h1 className="mb-6 text-5xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+                La plataforma completa para gestionar tu negocio
+              </h1>
+
+              <p className="mb-8 text-lg leading-relaxed text-gray-600">
+                Deja de configurar y empieza a innovar. Gestiona clientes, proyectos,
+                facturación y más con PQP 5.0, la herramienta que crece con tu empresa.
+              </p>
+
+              <div className="flex flex-col items-center justify-center gap-4 sm:flex-row lg:justify-start">
+                <Button asChild size="lg" className="w-full sm:w-auto">
+                  <Link href="/register">Comenzar gratis</Link>
+                </Button>
+                <Button
+                  asChild
+                  variant="outline"
+                  size="lg"
+                  className="w-full sm:w-auto bg-transparent"
+                >
+                  <Link href="#features">Ver características</Link>
+                </Button>
+              </div>
             </div>
-            <h1 className="mb-6 text-5xl font-bold tracking-tight text-gray-900 sm:text-6xl text-balance">
-              La plataforma completa para gestionar tu negocio
-            </h1>
-            <p className="mb-8 text-lg leading-relaxed text-gray-600 text-pretty">
-              Deja de configurar y empieza a innovar. Gestiona clientes, proyectos, facturación y más con PQP 5.0, la
-              herramienta que crece con tu empresa.
-            </p>
-            <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Button asChild size="lg" className="w-full sm:w-auto">
-                <Link href="/register">Comenzar gratis</Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="w-full sm:w-auto bg-transparent">
-                <Link href="#features">Ver características</Link>
-              </Button>
+
+            {/*  Imágenes animadas */}
+            <div className="relative flex items-center justify-center">
+              
+              {/* Imagen principal */}
+              <motion.div
+                initial={{ opacity: 0, y: 60 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                viewport={{ once: true }}
+              >
+                <Image
+                  src="/home-banner.webp"
+                  alt="Vista principal PQP 5.0"
+                  width={650}
+                  height={420}
+                  className="rounded-2xl shadow-2xl ring-1 ring-gray-100"
+                  priority
+                />
+              </motion.div>
+
+              {/* Imagen flotante superior derecha */}
+              <motion.div
+                className="absolute -top-8 -right-8 hidden sm:block"
+                initial={{ opacity: 0, scale: 0.8, rotate: 10 }}
+                whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                viewport={{ once: true }}
+              >
+                <Image
+                  src="/stats-preview.webp"
+                  alt="Estadísticas PQP"
+                  width={180}
+                  height={120}
+                  className="rounded-xl shadow-lg"
+                />
+              </motion.div>
+
+              {/* Imagen flotante inferior izquierda */}
+              <motion.div
+                className="absolute bottom-0 -left-10 hidden sm:block"
+                initial={{ opacity: 0, x: -40 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.9, delay: 0.6 }}
+                viewport={{ once: true }}
+              >
+                <Image
+                  src="/client-preview.webp"
+                  alt="Gestión de clientes"
+                  width={200}
+                  height={140}
+                  className="rounded-xl shadow-lg"
+                />
+              </motion.div>
             </div>
           </div>
         </div>
@@ -64,17 +136,22 @@ export default function HomePage() {
               Todo lo que necesitas en un solo lugar
             </h2>
             <p className="mx-auto max-w-2xl text-lg text-gray-600">
-              Herramientas poderosas diseñadas para hacer crecer tu negocio de manera eficiente
+              Herramientas poderosas diseñadas para hacer crecer tu negocio de manera eficiente.
             </p>
           </div>
 
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {features.map((feature, index) => (
-              <div key={index} className="rounded-lg bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
+              <div
+                key={index}
+                className="rounded-lg bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
+              >
                 <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-blue-50">
                   <feature.icon className="h-6 w-6 text-blue-600" />
                 </div>
-                <h3 className="mb-2 text-xl font-semibold text-gray-900">{feature.title}</h3>
+                <h3 className="mb-2 text-xl font-semibold text-gray-900">
+                  {feature.title}
+                </h3>
                 <p className="text-gray-600">{feature.description}</p>
               </div>
             ))}
@@ -86,12 +163,19 @@ export default function HomePage() {
       <section className="bg-gray-900 py-20 text-white">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className="mb-4 text-3xl font-bold sm:text-4xl text-balance">Comienza gratis hoy mismo</h2>
+            <h2 className="mb-4 text-3xl font-bold sm:text-4xl">
+              Comienza gratis hoy mismo
+            </h2>
             <p className="mb-8 text-lg text-gray-300">
               Sin tarjeta de crédito. Sin compromisos. Acceso completo al plan Free.
             </p>
             <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <Button asChild size="lg" variant="secondary" className="w-full sm:w-auto">
+              <Button
+                asChild
+                size="lg"
+                variant="secondary"
+                className="w-full sm:w-auto"
+              >
                 <Link href="/register">Crear cuenta gratis</Link>
               </Button>
             </div>
@@ -113,7 +197,7 @@ export default function HomePage() {
         </div>
       </section>
     </div>
-  )
+  );
 }
 
 const features = [
@@ -122,12 +206,7 @@ const features = [
     description: "Mantén toda la información de tus clientes organizada y accesible en un solo lugar.",
     icon: ({ className }: { className?: string }) => (
       <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-        />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
       </svg>
     ),
   },
@@ -136,64 +215,8 @@ const features = [
     description: "Crea y envía facturas profesionales en segundos. Seguimiento automático de pagos.",
     icon: ({ className }: { className?: string }) => (
       <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-        />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
       </svg>
     ),
   },
-  {
-    title: "Proyectos y Tareas",
-    description: "Organiza proyectos, asigna tareas y mantén a tu equipo sincronizado.",
-    icon: ({ className }: { className?: string }) => (
-      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
-        />
-      </svg>
-    ),
-  },
-  {
-    title: "Reportes y Analytics",
-    description: "Visualiza el rendimiento de tu negocio con reportes detallados y en tiempo real.",
-    icon: ({ className }: { className?: string }) => (
-      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-        />
-      </svg>
-    ),
-  },
-  {
-    title: "Automatización",
-    description: "Automatiza tareas repetitivas y ahorra tiempo valioso para tu equipo.",
-    icon: ({ className }: { className?: string }) => (
-      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-      </svg>
-    ),
-  },
-  {
-    title: "Integraciones",
-    description: "Conecta con tus herramientas favoritas y centraliza tu flujo de trabajo.",
-    icon: ({ className }: { className?: string }) => (
-      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"
-        />
-      </svg>
-    ),
-  },
-]
+];
