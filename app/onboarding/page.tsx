@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { Stepper } from "@/components/layout/stepper"
+import {  stepper as Stepper } from "@/components/layout/stepper"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -104,7 +104,6 @@ export default function OnboardingPage() {
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Configura tu experiencia</h1>
           <p className="text-gray-600">Personaliza PQP 5.0 según las necesidades de tu organización</p>
         </div>
-
         <Stepper steps={STEPS} currentStep={currentStep} className="mb-12" />
 
         <div className="bg-white rounded-lg shadow-sm border p-8">
