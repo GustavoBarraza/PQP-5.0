@@ -45,7 +45,7 @@ PQP 5.0 is a business management platform offering four pricing tiers: Free, Ess
 ## Getting Started
 
 ### Prerequisites
-- Node.js 18+ 
+- Node.js 20.9.0+
 - npm or yarn
 
 ### Installation

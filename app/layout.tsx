@@ -3,14 +3,16 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { Header } from "@/components/layout/header"
+import { stepper } from "@/components/layout/stepper"
 import { AuthProvider } from "@/lib/auth-context"
+import { Footer } from "@/components/layout/footer"
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "PQP 5.0 - Plataforma de Gestión Empresarial",
   description: "Gestiona tu negocio de manera eficiente con PQP 5.0",
-    generator: 'v0.app'
+  generator: 'v0.app'
 }
 
 export default function RootLayout({
@@ -23,7 +25,8 @@ export default function RootLayout({
       <body className={inter.className}>
         <AuthProvider>
           <Header />
-          {children}
+                {children}
+          <Footer />
         </AuthProvider>
       </body>
     </html>
