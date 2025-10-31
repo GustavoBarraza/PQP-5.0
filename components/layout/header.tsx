@@ -28,14 +28,14 @@ export function Header() {
   };
 
   const navLinks = [
-    { href: "/", label: "Inicio" },
-    { href: "/proposito", label: "Nuestro Propósito" },
-    { href: "/talento", label: "Talento Humano" },
-    { href: "/hub", label: "Hub PQP 5.0" },
-    { href: "/suscripcion", label: "Suscripción" },
-    { href: "/clientes", label: "Clientes" },
-    { href: "/acerca", label: "Acerca de" },
-  ];
+  { href: "/", label: "Inicio" },
+  { href: "/about", label: "Nuestro Propósito" },  // ← Corregido a /about
+  { href: "/talento", label: "Talento Humano" },
+  { href: "/hub", label: "Hub PQP 5.0" },
+  { href: "/suscripcion", label: "Suscripción" },
+  { href: "/clientes", label: "Clientes" },
+  { href: "/acerca", label: "Acerca de" },
+];
 
   const isActive = (path: string) => pathname === path;
 
