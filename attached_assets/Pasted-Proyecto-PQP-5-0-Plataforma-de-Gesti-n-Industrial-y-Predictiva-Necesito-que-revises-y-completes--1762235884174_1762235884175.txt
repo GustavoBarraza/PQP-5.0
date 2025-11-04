@@ -1,0 +1,138 @@
+Proyecto: PQP 5.0 — Plataforma de Gestión Industrial y Predictiva
+
+Necesito que revises y completes esta aplicación Next.js 16 con Tailwind CSS y TypeScript.
+El proyecto ya tiene los módulos base (Analítica, Alertas, Automatización, Colaboración, Compliance y Reports), pero faltan varias cosas que deben dejarse completamente funcionales y bien integradas.
+
+🧱 ESTRUCTURA Y FUNCIONALIDAD
+
+Navbar y Footer
+
+Arregla los enlaces rotos (404) y conéctalos correctamente a las páginas reales.
+
+Navbar moderna, minimalista e industrial (colores del tema actual).
+
+El footer debe tener enlaces funcionales a Misión, Visión, Valores, y la página de suscripciones.
+
+Nuevas páginas obligatorias
+
+/mision-vision: con la misión, visión y propuesta de valor.
+
+/suscripciones: con los planes de suscripción (Free, Essential, Advanced, Enterprise) y los módulos que cada plan desbloquea.
+
+Asegura que los módulos se bloqueen/desbloqueen según el plan activo.
+
+Módulo ROI (Retorno de Inversión)
+
+Calculadora de ROI simple y visual.
+
+Campos:
+
+Inversión inicial
+
+Ahorro anual proyectado
+
+Periodo (en meses)
+
+Fórmula base:
+
+𝑅
+𝑂
+𝐼
+=
+𝐴
+ℎ
+𝑜
+𝑟
+𝑟
+𝑜
+−
+𝐼
+𝑛
+𝑣
+𝑒
+𝑟
+𝑠
+𝑖
+𝑜
+ˊ
+𝑛
+𝐼
+𝑛
+𝑣
+𝑒
+𝑟
+𝑠
+𝑖
+𝑜
+ˊ
+𝑛
+×
+100
+ROI=
+Inversi
+o
+ˊ
+n
+Ahorro−Inversi
+o
+ˊ
+n
+	​
+
+×100
+
+Resultado en porcentaje, con indicador visual (color verde si es positivo, rojo si es negativo).
+
+Costo de parada de planta
+
+Agregar cálculo automático de pérdidas durante una parada de la refinería:
+
+Variables: costo hora parada, horas detenidas, producción diaria, margen unitario.
+
+Mostrar resultado total estimado en dinero.
+
+Gráfico de tendencia (línea o área).
+
+Gestión de residuos
+
+Panel que muestre:
+
+Cantidad de desechos acumulados.
+
+Costo total asociado.
+
+Empresas recicladoras de Mamonal (lista estática o con datos de ejemplo).
+
+Clasificación de qué tipo de material puede ir a cada empresa.
+
+Plataforma colaborativa
+
+Agregar chat o comentarios por módulo (puede ser una versión básica tipo “foro interno”).
+
+Posibilidad de asignar tareas o actividades a otros usuarios.
+
+Mostrar quién está conectado o activo en cada módulo.
+
+Espacio “Tablero de Innovación” tipo mural compartido (notas, ideas o benchmarking).
+
+Diseño
+
+Unifica el estilo visual (colores, tipografía y espaciados) según el tema actual del globals.css.
+
+Estilo industrial minimalista, referencias visuales:
+
+EcoSys para planificación de paradas.
+
+MaintainX para gestión de recursos y mantenimiento.
+
+Diseño totalmente responsive.
+
+Optimización general
+
+Limpia código redundante.
+
+Arregla imports incorrectos y errores TypeScript.
+
+Verifica compatibilidad con Tailwind 4+ (ajusta clases antiguas si hay).
+
+Usa componentes reutilizables para tarjetas, gráficos y botones.
