@@ -6,178 +6,168 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, DollarSign, Calendar, AlertCircle } from "lucide-react";
+import { TrendingUp, DollarSign, AlertCircle } from "lucide-react";
 
-/**
- * ROI Calculation Formula (Simplified):
- * ROI = (Ahorro - Inversión) / Inversión × 100
- * 
- * Also calculates payback period: Inversión / (Ahorro / Período)
- */
-
-interface SimpleROIInputs {
-  inversion: number;
-  ahorro: number;
-  periodo: number;
+export interface ROIInputs {
+  inversion: number; // moneda (COP)
+  roiTotalPercent?: number; // e.g., 140 means 140% total over horizon
+  horizonYears?: number; // e.g., 2 years
 }
 
-interface SimpleROIResults {
-  roi: number;
-  paybackPeriod: number;
-  ahorroMensual: number;
+export interface ROIResults {
+  roiTotalPercent: number;
+  roiAnnualPercent: number;
+  ahorroAnual: number;
+  ahorroTotal: number;
   interpretation: string;
   color: "green" | "red" | "yellow";
 }
 
-export function calculateSimpleROI(inputs: SimpleROIInputs): SimpleROIResults {
-  const { inversion, ahorro, periodo } = inputs;
-  
-  const roi = inversion > 0 ? ((ahorro - inversion) / inversion) * 100 : 0;
-  
-  const ahorroMensual = periodo > 0 ? ahorro / periodo : 0;
-  const paybackPeriod = ahorroMensual > 0 ? inversion / ahorroMensual : Infinity;
+/**
+ * calculateROI
+ * - inversion: capital invertido (COP)
+ * - roiTotalPercent: porcentaje total proyectado sobre la inversión en el horizonte (ej 140 = 140%)
+ * - horizonYears: horizonte en años donde se espera ese ROI total (ej 2)
+ *
+ * Devuelve: ROI total (%), ROI anual (%), ahorro anual (COP), ahorro total (COP)
+ */
+export function calculateROI({ inversion, roiTotalPercent = 140, horizonYears = 2 }: ROIInputs): ROIResults {
+  const roiTotal = roiTotalPercent; // e.g., 140
+  const roiAnnual = horizonYears > 0 ? roiTotal / horizonYears : roiTotal; // e.g., 70% anual
 
+  const ahorroTotal = (inversion * roiTotal) / 100;
+  const ahorroAnual = ahorroTotal / horizonYears;
+
+  // Interpretación simple
   let interpretation = "";
-  let color: "green" | "red" | "yellow" = "yellow";
-
-  if (roi > 0) {
+  let color: ROIResults["color"] = "yellow";
+  if (roiTotal > 100) {
+    interpretation = "Excelente: retorno muy superior a la inversión en el periodo.";
     color = "green";
-    if (roi > 100) {
-      interpretation = "¡Excelente! El ahorro supera ampliamente la inversión inicial.";
-    } else if (roi > 50) {
-      interpretation = "Muy bueno. Retorno positivo significativo sobre la inversión.";
-    } else {
-      interpretation = "Positivo. La inversión genera beneficios económicos.";
-    }
+  } else if (roiTotal > 50) {
+    interpretation = "Muy bueno: retorno positivo significativo.";
+    color = "green";
+  } else if (roiTotal > 0) {
+    interpretation = "Positivo: inversión produce ahorro.";
+    color = "yellow";
   } else {
+    interpretation = "Negativo: no se recupera la inversión en el periodo.";
     color = "red";
-    interpretation = "Negativo. Los ahorros no superan la inversión en el período indicado.";
   }
 
   return {
-    roi,
-    paybackPeriod,
-    ahorroMensual,
+    roiTotalPercent: roiTotal,
+    roiAnnualPercent: roiAnnual,
+    ahorroAnual,
+    ahorroTotal,
     interpretation,
     color,
   };
 }
 
 export function ROICalculator() {
-  const [inputs, setInputs] = useState<SimpleROIInputs>({
-    inversion: 500000,
-    ahorro: 800000,
-    periodo: 12,
-  });
+  const [inversion, setInversion] = useState<number>(300_000_000);
+  const [roiTotalPercent, setRoiTotalPercent] = useState<number>(140);
+  const [horizonYears, setHorizonYears] = useState<number>(2);
+  const [results, setResults] = useState<ROIResults | null>(null);
 
-  const [results, setResults] = useState<SimpleROIResults | null>(null);
+  const presets = [
+    { label: "140% en 2 años (70% anual)", total: 140, years: 2 },
+    { label: "100% en 1 año (100% anual)", total: 100, years: 1 },
+    { label: "50% en 1 año (50% anual)", total: 50, years: 1 },
+  ];
 
-  const handleCalculate = () => {
-    const calculated = calculateSimpleROI(inputs);
-    setResults(calculated);
+  const runCalc = () => {
+    if (!inversion || inversion <= 0) return;
+    const r = calculateROI({ inversion, roiTotalPercent, horizonYears });
+    setResults(r);
   };
 
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat("es-CO", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 0,
-    }).format(value);
+  const reset = () => {
+    setInversion(300_000_000);
+    setRoiTotalPercent(140);
+    setHorizonYears(2);
+    setResults(null);
   };
 
-  const formatPercent = (value: number) => {
-    return `${value.toFixed(2)}%`;
-  };
+  const formatCurrency = (value: number) =>
+    new Intl.NumberFormat("es-CO", { style: "currency", currency: "COP", maximumFractionDigits: 0 }).format(value);
+
+  const formatPercent = (value: number) => `${value.toFixed(2)}%`;
 
   return (
     <div className="space-y-6">
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <DollarSign className="w-5 h-5 text-emerald-600" />
-            Parámetros de Cálculo
+            <DollarSign className="w-5 h-5 text-cyan-700" />
+            Calculadora de ROI (Inversionistas)
           </CardTitle>
-          <CardDescription>
-            Ingrese los datos para calcular el retorno de inversión
-          </CardDescription>
+          <CardDescription>Introduce la inversión y selecciona el preset o define tu propio porcentaje.</CardDescription>
         </CardHeader>
+
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="space-y-2">
-              <Label htmlFor="inversion">
-                Inversión Inicial (USD)
-              </Label>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
+              <Label htmlFor="inversion">Inversión inicial (COP)</Label>
               <Input
                 id="inversion"
                 type="number"
-                value={inputs.inversion}
-                onChange={(e) =>
-                  setInputs({
-                    ...inputs,
-                    inversion: parseFloat(e.target.value) || 0,
-                  })
-                }
-                placeholder="500000"
+                value={inversion}
+                onChange={(e) => setInversion(Number(e.target.value) || 0)}
+                placeholder="300000000"
                 className="text-lg"
               />
-              <p className="text-xs text-gray-500">
-                Inversión total en el proyecto
-              </p>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="ahorro">
-                Ahorro Anual Proyectado (USD)
-              </Label>
+            <div>
+              <Label htmlFor="roiTotal">ROI total proyectado (%)</Label>
               <Input
-                id="ahorro"
+                id="roiTotal"
                 type="number"
-                value={inputs.ahorro}
-                onChange={(e) =>
-                  setInputs({
-                    ...inputs,
-                    ahorro: parseFloat(e.target.value) || 0,
-                  })
-                }
-                placeholder="800000"
-                className="text-lg"
+                value={roiTotalPercent}
+                onChange={(e) => setRoiTotalPercent(Number(e.target.value) || 0)}
               />
-              <p className="text-xs text-gray-500">
-                Ahorro estimado por año
-              </p>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="periodo">
-                Período (Meses)
-              </Label>
+            <div>
+              <Label htmlFor="years">Horizonte (años)</Label>
               <Input
-                id="periodo"
+                id="years"
                 type="number"
-                value={inputs.periodo}
-                onChange={(e) =>
-                  setInputs({
-                    ...inputs,
-                    periodo: parseFloat(e.target.value) || 0,
-                  })
-                }
-                placeholder="12"
-                className="text-lg"
+                value={horizonYears}
+                onChange={(e) => setHorizonYears(Number(e.target.value) || 0)}
               />
-              <p className="text-xs text-gray-500">
-                Tiempo de evaluación
-              </p>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Label>Presets</Label>
+              <div className="flex gap-2 flex-wrap">
+                {presets.map((p) => (
+                  <Button
+                    key={p.label}
+                    variant={p.total === roiTotalPercent && p.years === horizonYears ? "default" : "outline"}
+                    onClick={() => {
+                      setRoiTotalPercent(p.total);
+                      setHorizonYears(p.years);
+                    }}
+                    className="text-sm"
+                  >
+                    {p.label}
+                  </Button>
+                ))}
+              </div>
             </div>
           </div>
 
-          <Button
-            onClick={handleCalculate}
-            className="mt-6 w-full md:w-auto"
-            size="lg"
-          >
-            <TrendingUp className="w-4 h-4 mr-2" />
-            Calcular ROI
-          </Button>
+          <div className="flex gap-3 mt-6">
+            <Button onClick={runCalc} className="bg-cyan-800 hover:bg-cyan-900">
+              <TrendingUp className="w-4 h-4 mr-2" /> Calcular
+            </Button>
+            <Button variant="outline" onClick={reset}>
+              Limpiar
+            </Button>
+          </div>
         </CardContent>
       </Card>
 
@@ -185,96 +175,44 @@ export function ROICalculator() {
         <Card className={`border-2 ${results.color === "green" ? "border-emerald-500" : results.color === "red" ? "border-red-500" : "border-yellow-500"}`}>
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
-              <span>Resultado del Análisis</span>
-              <Badge 
-                className={`text-lg px-4 py-1 ${
-                  results.color === "green" ? "bg-emerald-500 text-white" : 
-                  results.color === "red" ? "bg-red-500 text-white" : 
-                  "bg-yellow-500 text-white"
-                }`}
-              >
-                {results.roi > 0 ? "ROI Positivo" : "ROI Negativo"}
+              <span>Resultados</span>
+              <Badge className={`text-sm px-3 py-1 ${results.color === "green" ? "bg-emerald-500 text-white" : results.color === "red" ? "bg-red-500 text-white" : "bg-yellow-500 text-white"}`}>
+                {results.roiTotalPercent >= 100 ? "ROI Alto" : results.roiTotalPercent > 0 ? "ROI Positivo" : "ROI Negativo"}
               </Badge>
             </CardTitle>
           </CardHeader>
+
           <CardContent>
-            {/* ROI Principal */}
-            <div className={`p-8 rounded-xl border-2 mb-6 ${
-              results.color === "green" ? "bg-emerald-50 border-emerald-200" : 
-              results.color === "red" ? "bg-red-50 border-red-200" : 
-              "bg-yellow-50 border-yellow-200"
-            }`}>
-              <div className="text-center">
-                <div className={`text-sm font-medium mb-2 ${
-                  results.color === "green" ? "text-emerald-700" : 
-                  results.color === "red" ? "text-red-700" : 
-                  "text-yellow-700"
-                }`}>
-                  Retorno de Inversión (ROI)
-                </div>
-                <div className={`text-6xl font-bold mb-2 ${
-                  results.color === "green" ? "text-emerald-900" : 
-                  results.color === "red" ? "text-red-900" : 
-                  "text-yellow-900"
-                }`}>
-                  {formatPercent(results.roi)}
-                </div>
-                <div className="text-sm text-gray-600 mb-4">
-                  Fórmula: (Ahorro - Inversión) / Inversión × 100
-                </div>
-                <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${
-                  results.color === "green" ? "bg-emerald-100 text-emerald-800" : 
-                  results.color === "red" ? "bg-red-100 text-red-800" : 
-                  "bg-yellow-100 text-yellow-800"
-                }`}>
-                  <AlertCircle className="w-4 h-4" />
-                  <span className="font-medium text-sm">{results.interpretation}</span>
-                </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <div className="text-sm text-gray-600">Inversión Inicial</div>
+                <div className="text-xl font-semibold">{formatCurrency(inversion)}</div>
+              </div>
+
+              <div className="p-4 rounded-lg" style={{ background: results.color === "green" ? "#ecfdf5" : results.color === "red" ? "#fff1f2" : "#fffbeb" }}>
+                <div className="text-sm text-gray-600">Ahorro Anual estimado</div>
+                <div className="text-xl font-semibold">{formatCurrency(results.ahorroAnual)}</div>
+                <div className="text-xs text-gray-500">({formatPercent(results.roiAnnualPercent)} anual)</div>
+              </div>
+
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <div className="text-sm text-gray-600">Ahorro Total (horizonte)</div>
+                <div className="text-xl font-semibold">{formatCurrency(results.ahorroTotal)}</div>
+                <div className="text-xs text-gray-500">({formatPercent(results.roiTotalPercent)} total)</div>
               </div>
             </div>
 
-            {/* Métricas Adicionales */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                <div className="text-sm text-blue-700 font-medium mb-1">
-                  Período de Recuperación
+            <div className="mt-6 p-4 bg-white rounded-lg border">
+              <div className="flex items-start gap-3">
+                <div className={`p-2 rounded-full ${results.color === "green" ? "bg-emerald-100 text-emerald-700" : results.color === "red" ? "bg-red-100 text-red-700" : "bg-yellow-100 text-yellow-700"}`}>
+                  <AlertCircle className="w-5 h-5" />
                 </div>
-                <div className="text-2xl font-bold text-blue-900">
-                  {results.paybackPeriod === Infinity
-                    ? "N/A"
-                    : `${results.paybackPeriod.toFixed(1)} meses`}
+                <div>
+                  <div className="text-sm font-medium">{results.interpretation}</div>
+                  <div className="text-xs text-gray-500 mt-1">
+                    ROI anual estimado: <strong>{formatPercent(results.roiAnnualPercent)}</strong>. ROI total en {horizonYears} años: <strong>{formatPercent(results.roiTotalPercent)}</strong>.
+                  </div>
                 </div>
-              </div>
-
-              <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
-                <div className="text-sm text-purple-700 font-medium mb-1">
-                  Ahorro Mensual
-                </div>
-                <div className="text-2xl font-bold text-purple-900">
-                  {formatCurrency(results.ahorroMensual)}
-                </div>
-              </div>
-            </div>
-
-            {/* Desglose */}
-            <div className="mt-6 space-y-2">
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <span className="text-gray-700 text-sm">Inversión Inicial:</span>
-                <span className="font-semibold text-gray-900">
-                  {formatCurrency(inputs.inversion)}
-                </span>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <span className="text-gray-700 text-sm">Ahorro Proyectado:</span>
-                <span className="font-semibold text-gray-900">
-                  {formatCurrency(inputs.ahorro)}
-                </span>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <span className="text-gray-700 text-sm">Beneficio Neto:</span>
-                <span className={`font-semibold ${results.roi > 0 ? "text-emerald-600" : "text-red-600"}`}>
-                  {formatCurrency(inputs.ahorro - inputs.inversion)}
-                </span>
               </div>
             </div>
           </CardContent>

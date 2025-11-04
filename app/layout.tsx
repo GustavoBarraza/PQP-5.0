@@ -3,16 +3,15 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { Header } from "@/components/layout/header"
-import { stepper } from "@/components/layout/stepper"
-import { AuthProvider } from "@/lib/auth-context"
 import { Footer } from "@/components/layout/footer"
+import { AuthProvider } from "@/lib/auth-context"
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "PQP 5.0 - Plataforma de Gestión Empresarial",
-  description: "Gestiona tu negocio de manera eficiente con PQP 5.0",
-  generator: 'v0.app'
+  title: "PQP 5.0 - Plataforma Colaborativa Industrial",
+  description: "Plataforma digital para la planeación inteligente de paradas industriales y gestión colaborativa.",
+  generator: "Next.js 16",
 }
 
 export default function RootLayout({
@@ -21,11 +20,13 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="es">
-      <body className={inter.className}>
+    <html lang="es" className="bg-gray-50 text-gray-900">
+      <body className={`${inter.className} min-h-screen flex flex-col`}>
         <AuthProvider>
           <Header />
-                {children}
+          <main className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            {children}
+          </main>
           <Footer />
         </AuthProvider>
       </body>

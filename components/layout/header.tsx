@@ -28,13 +28,13 @@ export function Header() {
   };
 
   const navLinks = [
-  { href: "/", label: "Inicio" },
-  { href: "/about", label: "Nuestro Propósito" },
-  { href: "/mision-vision", label: "Misión y Visión" },
-  { href: "/plans", label: "Planes y Precios" },
-  { href: "/dashboard", label: "Plataforma" },
-  { href: "/roi", label: "Calculadora ROI" },
-];
+    { href: "/", label: "Inicio" },
+    { href: "/about", label: "Nuestro Propósito" },
+    { href: "/mision-vision", label: "Misión y Visión" },
+    { href: "/plans", label: "Planes y Precios" },
+    { href: "/dashboard", label: "Plataforma" },
+    { href: "/roi", label: "Calculadora ROI" },
+  ];
 
   const isActive = (path: string) => pathname === path;
 
