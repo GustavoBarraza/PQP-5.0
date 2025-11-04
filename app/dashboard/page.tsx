@@ -3,38 +3,91 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Banner } from "@/components/ui/banner"
-import { MetricCard } from "@/components/cards/metric-card"
-import { ChecklistCard } from "@/components/cards/checklist-card"
 import { ModuleCard } from "@/components/cards/module-card"
+import { MetricCard } from "@/components/cards/metric-card"
 import { UpsellModal } from "@/components/modals/upsell-modal"
-import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription } from "@/components/ui/empty"
 import { useAuth } from "@/lib/auth-context"
-import { getUnlockedModules } from "@/lib/modules-config"
-import type { ChecklistItem } from "@/lib/types"
-import { TrendingUpIcon, UsersIcon, ClockIcon, ActivityIcon } from "@/components/ui/icons"
+import { ActivityIcon, AlertTriangleIcon, TrendingUpIcon, ClockIcon, UsersIcon } from "@/components/ui/icons"
 
 export default function DashboardPage() {
   const router = useRouter()
   const { user } = useAuth()
   const [showUpsellModal, setShowUpsellModal] = useState(false)
-  const [checklistItems, setChecklistItems] = useState<ChecklistItem[]>([
-    { id: "1", label: "Completa tu perfil de organización", completed: true },
-    { id: "2", label: "Invita a tu primer miembro del equipo", completed: false },
-    { id: "3", label: "Configura tus preferencias de alertas", completed: true },
-    { id: "4", label: "Explora los módulos disponibles", completed: false },
-    { id: "5", label: "Crea tu primer reporte", completed: false },
-  ])
 
-  const modules = getUnlockedModules(user?.plan || "free")
+  const modules = [
+    {
+      id: "1",
+      title: "Registro",
+      description: "Información de planta, equipos y calendario",
+      icon: <ClockIcon className="w-6 h-6" />,
+      route: "/registro",
+    },
+    {
+      id: "2",
+      title: "Analítica",
+      description: "KPIs en tiempo real, comparativos históricos",
+      icon: <TrendingUpIcon className="w-6 h-6" />,
+      route: "/analitica",
+    },
+    {
+      id: "3",
+      title: "Marketplace",
+      description: "Compra de repuestos y servicios",
+      icon: <UsersIcon className="w-6 h-6" />,
+      route: "/marketplace",
+    },
+    {
+      id: "4",
+      title: "Circularidad",
+      description: "Gestión y valorización de residuos",
+      icon: <ActivityIcon className="w-6 h-6" />,
+      route: "/circularidad",
+    },
+    {
+      id: "5",
+      title: "Mantenimiento Predictivo",
+      description: "IoT, sensores y alertas tempranas",
+      icon: <AlertTriangleIcon className="w-6 h-6" />,
+      route: "/predictivo",
+    },
+    {
+      id: "6",
+      title: "Tablero de Innovación",
+      description: "Proyectos conjuntos y benchmarking",
+      icon: <ActivityIcon className="w-6 h-6" />,
+      route: "/innovacion",
+    },
+    {
+      id: "7",
+      title: "Academia PQP",
+      description: "Capacitación digital y certificaciones SENA",
+      icon: <UsersIcon className="w-6 h-6" />,
+      route: "/academia",
+    },
+    {
+      id: "8",
+      title: "Soporte Prioritario",
+      description: "Mesa técnica 24/7 y brigadas móviles",
+      icon: <ActivityIcon className="w-6 h-6" />,
+      route: "/soporte",
+    },
+    {
+      id: "9",
+      title: "Brigada de Emergencia",
+      description: "Activación inmediata operativa",
+      icon: <AlertTriangleIcon className="w-6 h-6" />,
+      route: "/brigada",
+    },
+    {
+      id: "10",
+      title: "Gestión SST y Ambiental",
+      description: "Cumplimiento ISO 14001, 45001",
+      icon: <ActivityIcon className="w-6 h-6" />,
+      route: "/sst",
+    },
+  ];
 
-  const handleChecklistToggle = (id: string) => {
-    setChecklistItems((items) => items.map((item) => (item.id === id ? { ...item, completed: !item.completed } : item)))
-  }
-
-  const handleModuleUnlock = () => {
-    setShowUpsellModal(true)
-  }
-
+  const handleModuleUnlock = () => setShowUpsellModal(true)
   const handleViewPlans = () => {
     setShowUpsellModal(false)
     router.push("/plans")
@@ -46,91 +99,88 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
-        {/* Plan Banner */}
+    <div className="min-h-screen bg-gray-100 flex flex-col">
+      {/* Banner superior */}
+      <div className="bg-white border-b shadow-sm py-6 px-8 flex justify-between items-center">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Estado actual de la planta</h1>
+          <p className="text-gray-600">Parada programada en <span className="font-semibold text-green-600">22 días</span></p>
+        </div>
         {user?.plan === "free" && (
           <Banner
-            title="Estás en el Plan Free"
-            description="Actualiza para desbloquear módulos avanzados, límites ampliados y soporte prioritario"
+            title="Plan Free activo"
+            description="Actualiza para desbloquear módulos avanzados y soporte técnico completo"
             badge={{ text: "FREE", variant: "free" }}
             action={{
               label: "Ver planes",
               onClick: () => router.push("/plans"),
             }}
-            className="mb-8"
           />
         )}
-
-        {/* KPI Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <MetricCard
-            title="Registros este mes"
-            value="247"
-            change={{ value: "+12% vs mes anterior", trend: "up" }}
-            icon={<TrendingUpIcon className="w-5 h-5" />}
-          />
-          <MetricCard
-            title="Usuarios activos"
-            value="3"
-            change={{ value: "Límite: 5 usuarios", trend: "neutral" }}
-            icon={<UsersIcon className="w-5 h-5" />}
-          />
-          <MetricCard
-            title="Tiempo de actividad"
-            value="14 días"
-            change={{ value: "Desde el registro", trend: "neutral" }}
-            icon={<ClockIcon className="w-5 h-5" />}
-          />
-        </div>
-
-        {/* Checklist Card */}
-        <div className="mb-8">
-          <ChecklistCard title="Primeros pasos con PQP 5.0" items={checklistItems} onToggle={handleChecklistToggle} />
-        </div>
-
-        {/* Modules Section */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900">Módulos disponibles</h2>
-              <p className="text-sm text-gray-600 mt-1">
-                {modules.filter((m) => !m.locked).length} de {modules.length} módulos desbloqueados
-              </p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {modules.map((module) => (
-              <ModuleCard
-                key={module.id}
-                title={module.title}
-                description={module.description}
-                icon={module.icon}
-                locked={module.locked}
-                route={module.route}
-                requiredPlan={module.requiredPlan}
-                onUnlock={handleModuleUnlock}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Empty State for Activity */}
-        <div className="bg-white rounded-lg border p-8">
-          <Empty>
-            <EmptyHeader>
-              <EmptyMedia variant="icon">
-                <ActivityIcon className="w-6 h-6" />
-              </EmptyMedia>
-              <EmptyTitle>No hay actividad reciente</EmptyTitle>
-              <EmptyDescription>Comienza a usar los módulos disponibles para ver tu actividad aquí</EmptyDescription>
-            </EmptyHeader>
-          </Empty>
-        </div>
       </div>
 
-      {/* Upsell Modal */}
+      <div className="flex flex-1">
+        {/* Sección central */}
+        <main className="flex-1 p-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 overflow-y-auto">
+          {modules.map((mod) => (
+            <ModuleCard
+              key={mod.id}
+              title={mod.title}
+              description={mod.description}
+              icon={mod.icon}
+              route={mod.route}
+              locked={false}
+              onUnlock={handleModuleUnlock}
+            />
+          ))}
+        </main>
+
+        {/* Lateral derecho */}
+        <aside className="w-80 bg-white border-l shadow-sm p-6 flex flex-col gap-6 sticky top-0 h-screen overflow-y-auto">
+          <section>
+            <h2 className="text-lg font-bold mb-2">⚠️ Alertas</h2>
+            <ul className="text-sm text-gray-700 space-y-1">
+              <li>Sensor de presión fuera de rango</li>
+              <li>Mantenimiento pendiente: bomba #3</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="text-lg font-bold mb-2">📋 Tareas pendientes</h2>
+            <ul className="text-sm text-gray-700 space-y-1">
+              <li>Actualizar calendario de parada</li>
+              <li>Registrar nuevos equipos</li>
+              <li>Validar stock de repuestos</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="text-lg font-bold mb-2">💰 Ahorro proyectado</h2>
+            <p className="text-3xl font-bold text-green-600">$ 18.240.000</p>
+            <p className="text-sm text-gray-500">vs mes anterior: +6%</p>
+          </section>
+
+          <section>
+            <h2 className="text-lg font-bold mb-2">📊 KPIs</h2>
+            <div className="grid grid-cols-2 gap-4">
+              <MetricCard
+                title="Disponibilidad"
+                value="97%"
+                change={{ value: "+1.2%", trend: "up" }}
+                icon={<TrendingUpIcon className="w-5 h-5" />}
+              />
+              <MetricCard
+                title="Paradas"
+                value="3"
+                change={{ value: "-2", trend: "down" }}
+                icon={<ClockIcon className="w-5 h-5" />}
+              />
+            </div>
+          </section>
+        </aside>
+      </div>
+
+      {/* Modal de upgrade */}
       <UpsellModal
         isOpen={showUpsellModal}
         onClose={() => setShowUpsellModal(false)}

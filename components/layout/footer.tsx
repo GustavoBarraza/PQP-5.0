@@ -92,7 +92,7 @@ return (
       {/* Línea inferior */}
     <div className="border-t mt-8 pt-6">
         <div className="container mx-auto max-w-7xl px-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-600">
-        <p>Viva petro © 2025 PQP 5.0 Inc.</p>
+        <p>© 2025 PQP 5.0 Inc.</p>
         <div className="flex gap-4">
             <Link href="#" aria-label="Facebook">
             <Facebook className="w-4 h-4 hover:text-cyan-800" />
