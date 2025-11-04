@@ -22,7 +22,7 @@ return (
 
         {/* Columna 2 - Enlaces Rápidos */}
         <div>
-        <h3 className="font-bold mb-">Enlaces Rápidos</h3>
+        <h3 className="font-bold mb-2">Enlaces Rápidos</h3>
         <ul className="space-y-2 text-sm">
             <li>
             <Link href="/" className="hover:text-cyan-800">
@@ -30,30 +30,45 @@ return (
             </Link>
             </li>
             <li>
-            <Link href="/quienes-somos" className="hover:text-cyan-800">
-                Quiénes Somos
-            </Link>
-            </li>
-            <li>
-            <Link href="/proposito" className="hover:text-cyan-800">
+            <Link href="/about" className="hover:text-cyan-800">
                 Nuestro Propósito
             </Link>
             </li>
             <li>
-            <Link href="/modulos" className="hover:text-cyan-800">
+            <Link href="/mision-vision" className="hover:text-cyan-800">
+                Misión y Visión
+            </Link>
+            </li>
+            <li>
+            <Link href="/dashboard" className="hover:text-cyan-800">
                 Módulos PQP 5.0
+            </Link>
+            </li>
+            <li>
+            <Link href="/plans" className="hover:text-cyan-800">
+                Planes y Precios
             </Link>
             </li>
         </ul>
         </div>
 
-        {/* Columna 3 - Legal */}
+        {/* Columna 3 - Herramientas */}
         <div>
-        <h3 className="font-bold mb-2">Legal</h3>
-        <ul className="space-y-1 text-sm">
+        <h3 className="font-bold mb-2">Herramientas</h3>
+        <ul className="space-y-2 text-sm">
             <li>
-            <Link href="/terminos" className="hover:text-cyan-800">
-                Términos y Condiciones
+            <Link href="/roi" className="hover:text-cyan-800">
+                Calculadora ROI
+            </Link>
+            </li>
+            <li>
+            <Link href="/modules/analytics" className="hover:text-cyan-800">
+                Analítica
+            </Link>
+            </li>
+            <li>
+            <Link href="/modules/shutdown-planning" className="hover:text-cyan-800">
+                Planeación de Paradas
             </Link>
             </li>
         </ul>
@@ -62,27 +77,32 @@ return (
         {/* Columna 4 - Contacto */}
         <div>
         <h3 className="font-bold mb-2">Contacto</h3>
-        <ul className="space-y-1 text-sm">
+        <ul className="space-y-2 text-sm">
             <li>
-            <Link href="/soporte" className="hover:text-cyan-800">
+            <Link href="/modules/support" className="hover:text-cyan-800">
                 Soporte
             </Link>
             </li>
             <li>
-            <Link href="/ventas" className="hover:text-cyan-800">
-                Ventas
+            <Link href="/register" className="hover:text-cyan-800">
+                Contáctenos
             </Link>
             </li>
         </ul>
         </div>
 
-        {/* Columna 5 - Preguntas */}
+        {/* Columna 5 - Legal */}
         <div>
-        <h3 className="font-bold mb-2">¿Tienes alguna pregunta?</h3>
-        <ul className="space-y-1 text-sm">
+        <h3 className="font-bold mb-2">Legal y Ayuda</h3>
+        <ul className="space-y-2 text-sm">
             <li>
-            <Link href="/faq" className="hover:text-cyan-800">
-                Preguntas frecuentes
+            <Link href="/about" className="hover:text-cyan-800">
+                Términos de Uso
+            </Link>
+            </li>
+            <li>
+            <Link href="/about" className="hover:text-cyan-800">
+                Privacidad
             </Link>
             </li>
         </ul>

@@ -29,12 +29,11 @@ export function Header() {
 
   const navLinks = [
   { href: "/", label: "Inicio" },
-  { href: "/about", label: "Nuestro Propósito" },  // ← Corregido a /about
-  { href: "/talento", label: "Talento Humano" },
-  { href: "/hub", label: "Hub PQP 5.0" },
-  { href: "/suscripcion", label: "Suscripción" },
-  { href: "/clientes", label: "Clientes" },
-  { href: "/acerca", label: "Acerca de" },
+  { href: "/about", label: "Nuestro Propósito" },
+  { href: "/mision-vision", label: "Misión y Visión" },
+  { href: "/plans", label: "Planes y Precios" },
+  { href: "/dashboard", label: "Plataforma" },
+  { href: "/roi", label: "Calculadora ROI" },
 ];
 
   const isActive = (path: string) => pathname === path;
@@ -45,7 +44,7 @@ export function Header() {
       <div className="hidden lg:block w-full bg-gray-50 border-b">
         <div className="flex justify-end items-center h-9 px-6 text-sm text-gray-700 gap-4">
           <button
-            onClick={() => router.push("/apoyo")}
+            onClick={() => router.push("/modules/support")}
             className="flex items-center gap-1 cursor-pointer hover:text-cyan-800 transition-colors"
           >
             <Headphones className="w-4 h-4" />
@@ -61,11 +60,11 @@ export function Header() {
               <DropdownMenuContent align="end" className="w-48">
                 <DropdownMenuLabel>Mi Cuenta</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => router.push("/perfil")}>
+                <DropdownMenuItem onClick={() => router.push("/account")}>
                   <User className="w-4 h-4 mr-2" />
                   Perfil
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => router.push("/configuracion")}>
+                <DropdownMenuItem onClick={() => router.push("/account")}>
                   <Settings className="w-4 h-4 mr-2" />
                   Configuración
                 </DropdownMenuItem>
@@ -120,7 +119,7 @@ export function Header() {
             variant="outline"
             className="border-cyan-800 text-cyan-800 hover:bg-cyan-50 font-medium px-4 py-2 rounded-lg"
           >
-            <Link href="/tour">Haz un recorrido</Link>
+            <Link href="/onboarding">Haz un recorrido</Link>
           </Button>
 
           <Button
@@ -167,7 +166,7 @@ export function Header() {
                 variant="outline"
                 className="w-full border-cyan-800 text-cyan-800 hover:bg-cyan-50"
               >
-                <Link href="/tour" onClick={() => setMobileMenuOpen(false)}>
+                <Link href="/onboarding" onClick={() => setMobileMenuOpen(false)}>
                   Haz un recorrido
                 </Link>
               </Button>
@@ -185,7 +184,7 @@ export function Header() {
               {/* Mobile Auth Section */}
               <div className="pt-2 border-t flex flex-col gap-2">
                 <Link
-                  href="/apoyo"
+                  href="/modules/support"
                   onClick={() => setMobileMenuOpen(false)}
                   className="flex items-center gap-2 py-2 text-sm text-gray-700 hover:text-cyan-800"
                 >
@@ -196,7 +195,7 @@ export function Header() {
                 {isAuthenticated && user ? (
                   <>
                     <Link
-                      href="/perfil"
+                      href="/account"
                       onClick={() => setMobileMenuOpen(false)}
                       className="flex items-center gap-2 py-2 text-sm text-gray-700 hover:text-cyan-800"
                     >
