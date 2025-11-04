@@ -226,7 +226,7 @@ export function ROICalculator() {
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
               <span>Resultados del Análisis</span>
-              <Badge
+              <Badge 
                 variant={results.roi > 0 ? "default" : "destructive"}
                 className="text-lg px-4 py-1"
               >

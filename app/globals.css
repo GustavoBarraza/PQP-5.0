@@ -2,39 +2,86 @@
 @import "tw-animate-css";
 
 
-/* ======== Variables principales ======== */
+/* ======== Theme Industrial Minimalista PQP 5.0 ======== */
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --radius: 0.625rem;
+  /* Paleta industrial moderna */
+  --industrial-blue: #0f4c81;
+  --industrial-blue-dark: #0a3459;
+  --accent-green: #10b981;
+  --accent-green-dark: #059669;
+  
+  /* Neutrales */
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+  
+  /* Variables principales */
+  --background: #ffffff;
+  --foreground: var(--gray-900);
+  --card: #ffffff;
+  --card-foreground: var(--gray-900);
+  --popover: #ffffff;
+  --popover-foreground: var(--gray-900);
+  --primary: var(--industrial-blue);
+  --primary-foreground: #ffffff;
+  --secondary: var(--gray-100);
+  --secondary-foreground: var(--gray-900);
+  --muted: var(--gray-100);
+  --muted-foreground: var(--gray-600);
+  --accent: var(--accent-green);
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: var(--gray-200);
+  --input: var(--gray-200);
+  --ring: var(--industrial-blue);
+  --radius: 8px;
 }
 
 /* ======== Tema oscuro ======== */
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --primary: oklch(0.985 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --border: oklch(0.269 0 0);
-  --ring: oklch(0.439 0 0);
+  --background: var(--gray-900);
+  --foreground: var(--gray-50);
+  --card: var(--gray-800);
+  --card-foreground: var(--gray-50);
+  --popover: var(--gray-800);
+  --popover-foreground: var(--gray-50);
+  --primary: var(--industrial-blue);
+  --primary-foreground: #ffffff;
+  --secondary: var(--gray-700);
+  --secondary-foreground: var(--gray-50);
+  --muted: var(--gray-700);
+  --muted-foreground: var(--gray-400);
+  --accent: var(--accent-green);
+  --accent-foreground: #ffffff;
+  --border: var(--gray-700);
+  --input: var(--gray-700);
+  --ring: var(--industrial-blue);
+}
+
+/* ======== Estilos base ======== */
+* {
+  @apply border-border;
+}
+
+body {
+  @apply bg-background text-foreground;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* ======== Utilidades personalizadas ======== */
+.shadow-industrial {
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+}
+
+.shadow-industrial-lg {
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 }
 
