@@ -109,7 +109,7 @@ export default function MisionVisionPage() {
                 competitividad y sostenibilidad del sector.
               </p>
               <p className="text-lg text-gray-700 leading-relaxed">
-                Aspiramos a convertirnos en el estándar de referencia para la Industria 4.0 en la región.
+                Aspiramos a convertirnos en el estándar de referencia para la Industria 5.0 en la región.
               </p>
             </CardContent>
           </Card>
