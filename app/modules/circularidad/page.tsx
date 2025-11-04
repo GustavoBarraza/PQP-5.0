@@ -84,6 +84,7 @@ export default function CircularidadPage() {
           <TabsList>
             <TabsTrigger value="overview">Vista general</TabsTrigger>
             <TabsTrigger value="flows">Flujos</TabsTrigger>
+            <TabsTrigger value="recyclers">Empresas Recicladoras</TabsTrigger>
             <TabsTrigger value="reports">Reportes</TabsTrigger>
           </TabsList>
 
@@ -117,6 +118,220 @@ export default function CircularidadPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600">Mapa de flujos — (placeholder)</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="recyclers" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>Empresas Recicladoras de Mamonal</CardTitle>
+                <CardDescription>
+                  Red de gestores autorizados para valorización de residuos industriales
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {/* EcoReciclaje Mamonal */}
+                  <div className="p-4 border-2 border-emerald-200 rounded-lg bg-emerald-50/50">
+                    <div className="flex items-start justify-between mb-3">
+                      <div>
+                        <h3 className="font-bold text-lg text-gray-900">EcoReciclaje Mamonal S.A.S</h3>
+                        <p className="text-sm text-gray-600">Licencia Ambiental: LA-2024-001</p>
+                      </div>
+                      <span className="px-3 py-1 bg-emerald-600 text-white text-xs font-semibold rounded-full">
+                        Activo
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                      <div className="text-sm">
+                        <span className="font-medium text-gray-700">📍 Ubicación:</span>
+                        <span className="text-gray-600"> Zona Industrial Mamonal, Cartagena</span>
+                      </div>
+                      <div className="text-sm">
+                        <span className="font-medium text-gray-700">📞 Contacto:</span>
+                        <span className="text-gray-600"> +57 300 123 4567</span>
+                      </div>
+                    </div>
+                    <div>
+                      <span className="font-medium text-sm text-gray-700 block mb-2">Materiales Aceptados:</span>
+                      <div className="flex flex-wrap gap-2">
+                        <span className="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
+                          Plásticos industriales
+                        </span>
+                        <span className="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
+                          PET, HDPE, PP
+                        </span>
+                        <span className="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
+                          Empaques multicapa
+                        </span>
+                        <span className="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
+                          Films plásticos
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Metales del Caribe */}
+                  <div className="p-4 border-2 border-gray-200 rounded-lg bg-gray-50/50">
+                    <div className="flex items-start justify-between mb-3">
+                      <div>
+                        <h3 className="font-bold text-lg text-gray-900">Metales del Caribe Ltda.</h3>
+                        <p className="text-sm text-gray-600">Licencia Ambiental: LA-2023-045</p>
+                      </div>
+                      <span className="px-3 py-1 bg-emerald-600 text-white text-xs font-semibold rounded-full">
+                        Activo
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                      <div className="text-sm">
+                        <span className="font-medium text-gray-700">📍 Ubicación:</span>
+                        <span className="text-gray-600"> Parque Industrial Mamonal</span>
+                      </div>
+                      <div className="text-sm">
+                        <span className="font-medium text-gray-700">📞 Contacto:</span>
+                        <span className="text-gray-600"> +57 315 987 6543</span>
+                      </div>
+                    </div>
+                    <div>
+                      <span className="font-medium text-sm text-gray-700 block mb-2">Materiales Aceptados:</span>
+                      <div className="flex flex-wrap gap-2">
+                        <span className="px-3 py-1 bg-gray-600 text-white text-xs font-medium rounded-full">
+                          Chatarra ferrosa
+                        </span>
+                        <span className="px-3 py-1 bg-gray-600 text-white text-xs font-medium rounded-full">
+                          Aluminio industrial
+                        </span>
+                        <span className="px-3 py-1 bg-gray-600 text-white text-xs font-medium rounded-full">
+                          Cobre y bronce
+                        </span>
+                        <span className="px-3 py-1 bg-gray-600 text-white text-xs font-medium rounded-full">
+                          Acero inoxidable
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Papelera Caribe */}
+                  <div className="p-4 border-2 border-amber-200 rounded-lg bg-amber-50/50">
+                    <div className="flex items-start justify-between mb-3">
+                      <div>
+                        <h3 className="font-bold text-lg text-gray-900">Papelera Caribe Industrial</h3>
+                        <p className="text-sm text-gray-600">Licencia Ambiental: LA-2024-018</p>
+                      </div>
+                      <span className="px-3 py-1 bg-emerald-600 text-white text-xs font-semibold rounded-full">
+                        Activo
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                      <div className="text-sm">
+                        <span className="font-medium text-gray-700">📍 Ubicación:</span>
+                        <span className="text-gray-600"> Sector 3, Mamonal</span>
+                      </div>
+                      <div className="text-sm">
+                        <span className="font-medium text-gray-700">📞 Contacto:</span>
+                        <span className="text-gray-600"> +57 320 456 7890</span>
+                      </div>
+                    </div>
+                    <div>
+                      <span className="font-medium text-sm text-gray-700 block mb-2">Materiales Aceptados:</span>
+                      <div className="flex flex-wrap gap-2">
+                        <span className="px-3 py-1 bg-amber-600 text-white text-xs font-medium rounded-full">
+                          Cartón industrial
+                        </span>
+                        <span className="px-3 py-1 bg-amber-600 text-white text-xs font-medium rounded-full">
+                          Papel kraft
+                        </span>
+                        <span className="px-3 py-1 bg-amber-600 text-white text-xs font-medium rounded-full">
+                          Archivo inactivo
+                        </span>
+                        <span className="px-3 py-1 bg-amber-600 text-white text-xs font-medium rounded-full">
+                          Empaques corrugados
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Vidrios y Cristales */}
+                  <div className="p-4 border-2 border-cyan-200 rounded-lg bg-cyan-50/50">
+                    <div className="flex items-start justify-between mb-3">
+                      <div>
+                        <h3 className="font-bold text-lg text-gray-900">Vidrios y Cristales del Norte</h3>
+                        <p className="text-sm text-gray-600">Licencia Ambiental: LA-2023-092</p>
+                      </div>
+                      <span className="px-3 py-1 bg-emerald-600 text-white text-xs font-semibold rounded-full">
+                        Activo
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                      <div className="text-sm">
+                        <span className="font-medium text-gray-700">📍 Ubicación:</span>
+                        <span className="text-gray-600"> Vía Mamonal Km 8</span>
+                      </div>
+                      <div className="text-sm">
+                        <span className="font-medium text-gray-700">📞 Contacto:</span>
+                        <span className="text-gray-600"> +57 310 234 5678</span>
+                      </div>
+                    </div>
+                    <div>
+                      <span className="font-medium text-sm text-gray-700 block mb-2">Materiales Aceptados:</span>
+                      <div className="flex flex-wrap gap-2">
+                        <span className="px-3 py-1 bg-cyan-600 text-white text-xs font-medium rounded-full">
+                          Vidrio transparente
+                        </span>
+                        <span className="px-3 py-1 bg-cyan-600 text-white text-xs font-medium rounded-full">
+                          Vidrio de color
+                        </span>
+                        <span className="px-3 py-1 bg-cyan-600 text-white text-xs font-medium rounded-full">
+                          Envases de vidrio
+                        </span>
+                        <span className="px-3 py-1 bg-cyan-600 text-white text-xs font-medium rounded-full">
+                          Cristales industriales
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Orgánicos Sostenibles */}
+                  <div className="p-4 border-2 border-green-200 rounded-lg bg-green-50/50">
+                    <div className="flex items-start justify-between mb-3">
+                      <div>
+                        <h3 className="font-bold text-lg text-gray-900">Orgánicos Sostenibles Costa</h3>
+                        <p className="text-sm text-gray-600">Licencia Ambiental: LA-2024-033</p>
+                      </div>
+                      <span className="px-3 py-1 bg-emerald-600 text-white text-xs font-semibold rounded-full">
+                        Activo
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                      <div className="text-sm">
+                        <span className="font-medium text-gray-700">📍 Ubicación:</span>
+                        <span className="text-gray-600"> Zona Verde Mamonal</span>
+                      </div>
+                      <div className="text-sm">
+                        <span className="font-medium text-gray-700">📞 Contacto:</span>
+                        <span className="text-gray-600"> +57 318 765 4321</span>
+                      </div>
+                    </div>
+                    <div>
+                      <span className="font-medium text-sm text-gray-700 block mb-2">Materiales Aceptados:</span>
+                      <div className="flex flex-wrap gap-2">
+                        <span className="px-3 py-1 bg-green-600 text-white text-xs font-medium rounded-full">
+                          Residuos vegetales
+                        </span>
+                        <span className="px-3 py-1 bg-green-600 text-white text-xs font-medium rounded-full">
+                          Madera no tratada
+                        </span>
+                        <span className="px-3 py-1 bg-green-600 text-white text-xs font-medium rounded-full">
+                          Compostables industriales
+                        </span>
+                        <span className="px-3 py-1 bg-green-600 text-white text-xs font-medium rounded-full">
+                          Biomasa
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>

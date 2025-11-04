@@ -9,74 +9,71 @@ import { Badge } from "@/components/ui/badge";
 import { TrendingUp, DollarSign, Calendar, AlertCircle } from "lucide-react";
 
 /**
- * ROI Calculation Formulas:
+ * ROI Calculation Formula (Simplified):
+ * ROI = (Ahorro - Inversión) / Inversión × 100
  * 
- * Benefit = (savings_per_stop * stops_per_year) + other_annual_benefits
- * Cost = implementation_cost + annual_operational_cost
- * ROI = (Benefit - Cost) / Cost   // resultado en decimal -> mostrar como %
- * PaybackPeriod = implementation_cost / (savings_per_stop * stops_per_year + other_annual_benefits)
+ * Also calculates payback period: Inversión / (Ahorro / Período)
  */
 
-interface ROIInputs {
-  savingsPerStop: number;
-  stopsPerYear: number;
-  otherAnnualBenefits: number;
-  implementationCost: number;
-  annualOperationalCost: number;
+interface SimpleROIInputs {
+  inversion: number;
+  ahorro: number;
+  periodo: number;
 }
 
-interface ROIResults {
+interface SimpleROIResults {
   roi: number;
   paybackPeriod: number;
-  annualBenefit: number;
-  totalCost: number;
-  netBenefit: number;
+  ahorroMensual: number;
   interpretation: string;
+  color: "green" | "red" | "yellow";
 }
 
-export function calculateROI(inputs: ROIInputs): ROIResults {
-  const annualBenefit =
-    inputs.savingsPerStop * inputs.stopsPerYear + inputs.otherAnnualBenefits;
-  const totalCost = inputs.implementationCost + inputs.annualOperationalCost;
-  const roi = totalCost > 0 ? ((annualBenefit - totalCost) / totalCost) * 100 : 0;
-  const paybackPeriod =
-    annualBenefit > 0 ? inputs.implementationCost / annualBenefit : Infinity;
-  const netBenefit = annualBenefit - totalCost;
+export function calculateSimpleROI(inputs: SimpleROIInputs): SimpleROIResults {
+  const { inversion, ahorro, periodo } = inputs;
+  
+  const roi = inversion > 0 ? ((ahorro - inversion) / inversion) * 100 : 0;
+  
+  const ahorroMensual = periodo > 0 ? ahorro / periodo : 0;
+  const paybackPeriod = ahorroMensual > 0 ? inversion / ahorroMensual : Infinity;
 
   let interpretation = "";
-  if (roi > 50) {
-    interpretation = "ROI Excelente — Altamente recomendable. Retorno superior al 50%.";
-  } else if (roi > 20) {
-    interpretation = "ROI Positivo — Recomendable. Buena inversión a mediano plazo.";
-  } else if (roi > 0) {
-    interpretation = "ROI Positivo — Aceptable. Evaluar otros factores estratégicos.";
+  let color: "green" | "red" | "yellow" = "yellow";
+
+  if (roi > 0) {
+    color = "green";
+    if (roi > 100) {
+      interpretation = "¡Excelente! El ahorro supera ampliamente la inversión inicial.";
+    } else if (roi > 50) {
+      interpretation = "Muy bueno. Retorno positivo significativo sobre la inversión.";
+    } else {
+      interpretation = "Positivo. La inversión genera beneficios económicos.";
+    }
   } else {
-    interpretation = "ROI Negativo — No recomendable en términos financieros actuales.";
+    color = "red";
+    interpretation = "Negativo. Los ahorros no superan la inversión en el período indicado.";
   }
 
   return {
     roi,
     paybackPeriod,
-    annualBenefit,
-    totalCost,
-    netBenefit,
+    ahorroMensual,
     interpretation,
+    color,
   };
 }
 
 export function ROICalculator() {
-  const [inputs, setInputs] = useState<ROIInputs>({
-    savingsPerStop: 250000, // USD
-    stopsPerYear: 2,
-    otherAnnualBenefits: 100000,
-    implementationCost: 500000,
-    annualOperationalCost: 80000,
+  const [inputs, setInputs] = useState<SimpleROIInputs>({
+    inversion: 500000,
+    ahorro: 800000,
+    periodo: 12,
   });
 
-  const [results, setResults] = useState<ROIResults | null>(null);
+  const [results, setResults] = useState<SimpleROIResults | null>(null);
 
   const handleCalculate = () => {
-    const calculated = calculateROI(inputs);
+    const calculated = calculateSimpleROI(inputs);
     setResults(calculated);
   };
 
@@ -98,114 +95,77 @@ export function ROICalculator() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <DollarSign className="w-5 h-5 text-emerald-600" />
-            Parámetros de Inversión
+            Parámetros de Cálculo
           </CardTitle>
           <CardDescription>
-            Ingrese los datos de su proyecto de optimización
+            Ingrese los datos para calcular el retorno de inversión
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="savingsPerStop">
-                Ahorro por Parada (USD)
+              <Label htmlFor="inversion">
+                Inversión Inicial (USD)
               </Label>
               <Input
-                id="savingsPerStop"
+                id="inversion"
                 type="number"
-                value={inputs.savingsPerStop}
+                value={inputs.inversion}
                 onChange={(e) =>
                   setInputs({
                     ...inputs,
-                    savingsPerStop: parseFloat(e.target.value) || 0,
-                  })
-                }
-                placeholder="250000"
-              />
-              <p className="text-xs text-gray-500">
-                Ahorro estimado por cada parada optimizada
-              </p>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="stopsPerYear">Paradas por Año</Label>
-              <Input
-                id="stopsPerYear"
-                type="number"
-                value={inputs.stopsPerYear}
-                onChange={(e) =>
-                  setInputs({
-                    ...inputs,
-                    stopsPerYear: parseFloat(e.target.value) || 0,
-                  })
-                }
-                placeholder="2"
-              />
-              <p className="text-xs text-gray-500">
-                Número de paradas programadas anualmente
-              </p>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="otherBenefits">
-                Otros Beneficios Anuales (USD)
-              </Label>
-              <Input
-                id="otherBenefits"
-                type="number"
-                value={inputs.otherAnnualBenefits}
-                onChange={(e) =>
-                  setInputs({
-                    ...inputs,
-                    otherAnnualBenefits: parseFloat(e.target.value) || 0,
-                  })
-                }
-                placeholder="100000"
-              />
-              <p className="text-xs text-gray-500">
-                Eficiencia, reducción de inventarios, etc.
-              </p>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="implementationCost">
-                Costo de Implementación (USD)
-              </Label>
-              <Input
-                id="implementationCost"
-                type="number"
-                value={inputs.implementationCost}
-                onChange={(e) =>
-                  setInputs({
-                    ...inputs,
-                    implementationCost: parseFloat(e.target.value) || 0,
+                    inversion: parseFloat(e.target.value) || 0,
                   })
                 }
                 placeholder="500000"
+                className="text-lg"
               />
               <p className="text-xs text-gray-500">
-                Inversión inicial en plataforma y capacitación
+                Inversión total en el proyecto
               </p>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="operationalCost">
-                Costo Operativo Anual (USD)
+              <Label htmlFor="ahorro">
+                Ahorro Anual Proyectado (USD)
               </Label>
               <Input
-                id="operationalCost"
+                id="ahorro"
                 type="number"
-                value={inputs.annualOperationalCost}
+                value={inputs.ahorro}
                 onChange={(e) =>
                   setInputs({
                     ...inputs,
-                    annualOperationalCost: parseFloat(e.target.value) || 0,
+                    ahorro: parseFloat(e.target.value) || 0,
                   })
                 }
-                placeholder="80000"
+                placeholder="800000"
+                className="text-lg"
               />
               <p className="text-xs text-gray-500">
-                Licencias, mantenimiento, soporte
+                Ahorro estimado por año
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="periodo">
+                Período (Meses)
+              </Label>
+              <Input
+                id="periodo"
+                type="number"
+                value={inputs.periodo}
+                onChange={(e) =>
+                  setInputs({
+                    ...inputs,
+                    periodo: parseFloat(e.target.value) || 0,
+                  })
+                }
+                placeholder="12"
+                className="text-lg"
+              />
+              <p className="text-xs text-gray-500">
+                Tiempo de evaluación
               </p>
             </div>
           </div>
@@ -222,74 +182,99 @@ export function ROICalculator() {
       </Card>
 
       {results && (
-        <Card className="border-2 border-primary">
+        <Card className={`border-2 ${results.color === "green" ? "border-emerald-500" : results.color === "red" ? "border-red-500" : "border-yellow-500"}`}>
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
-              <span>Resultados del Análisis</span>
+              <span>Resultado del Análisis</span>
               <Badge 
-                variant={results.roi > 0 ? "default" : "destructive"}
-                className="text-lg px-4 py-1"
+                className={`text-lg px-4 py-1 ${
+                  results.color === "green" ? "bg-emerald-500 text-white" : 
+                  results.color === "red" ? "bg-red-500 text-white" : 
+                  "bg-yellow-500 text-white"
+                }`}
               >
-                {results.roi > 0 ? "Positivo" : "Negativo"}
+                {results.roi > 0 ? "ROI Positivo" : "ROI Negativo"}
               </Badge>
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-              <div className="p-6 bg-emerald-50 rounded-lg border-2 border-emerald-200">
-                <div className="text-sm text-emerald-700 font-medium mb-2">
-                  ROI Anual
+            {/* ROI Principal */}
+            <div className={`p-8 rounded-xl border-2 mb-6 ${
+              results.color === "green" ? "bg-emerald-50 border-emerald-200" : 
+              results.color === "red" ? "bg-red-50 border-red-200" : 
+              "bg-yellow-50 border-yellow-200"
+            }`}>
+              <div className="text-center">
+                <div className={`text-sm font-medium mb-2 ${
+                  results.color === "green" ? "text-emerald-700" : 
+                  results.color === "red" ? "text-red-700" : 
+                  "text-yellow-700"
+                }`}>
+                  Retorno de Inversión (ROI)
                 </div>
-                <div className="text-4xl font-bold text-emerald-900">
+                <div className={`text-6xl font-bold mb-2 ${
+                  results.color === "green" ? "text-emerald-900" : 
+                  results.color === "red" ? "text-red-900" : 
+                  "text-yellow-900"
+                }`}>
                   {formatPercent(results.roi)}
                 </div>
+                <div className="text-sm text-gray-600 mb-4">
+                  Fórmula: (Ahorro - Inversión) / Inversión × 100
+                </div>
+                <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${
+                  results.color === "green" ? "bg-emerald-100 text-emerald-800" : 
+                  results.color === "red" ? "bg-red-100 text-red-800" : 
+                  "bg-yellow-100 text-yellow-800"
+                }`}>
+                  <AlertCircle className="w-4 h-4" />
+                  <span className="font-medium text-sm">{results.interpretation}</span>
+                </div>
               </div>
+            </div>
 
-              <div className="p-6 bg-blue-50 rounded-lg border-2 border-blue-200">
-                <div className="text-sm text-blue-700 font-medium mb-2">
+            {/* Métricas Adicionales */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <div className="text-sm text-blue-700 font-medium mb-1">
                   Período de Recuperación
                 </div>
-                <div className="text-4xl font-bold text-blue-900">
+                <div className="text-2xl font-bold text-blue-900">
                   {results.paybackPeriod === Infinity
                     ? "N/A"
-                    : `${results.paybackPeriod.toFixed(1)} años`}
+                    : `${results.paybackPeriod.toFixed(1)} meses`}
                 </div>
               </div>
 
-              <div className="p-6 bg-purple-50 rounded-lg border-2 border-purple-200">
-                <div className="text-sm text-purple-700 font-medium mb-2">
-                  Beneficio Neto Anual
+              <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
+                <div className="text-sm text-purple-700 font-medium mb-1">
+                  Ahorro Mensual
                 </div>
-                <div className="text-3xl font-bold text-purple-900">
-                  {formatCurrency(results.netBenefit)}
+                <div className="text-2xl font-bold text-purple-900">
+                  {formatCurrency(results.ahorroMensual)}
                 </div>
               </div>
             </div>
 
-            <div className="space-y-4">
-              <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                <span className="text-gray-700">Beneficio Anual Total:</span>
-                <span className="font-semibold text-lg">
-                  {formatCurrency(results.annualBenefit)}
+            {/* Desglose */}
+            <div className="mt-6 space-y-2">
+              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <span className="text-gray-700 text-sm">Inversión Inicial:</span>
+                <span className="font-semibold text-gray-900">
+                  {formatCurrency(inputs.inversion)}
                 </span>
               </div>
-              <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                <span className="text-gray-700">Costo Total Anual:</span>
-                <span className="font-semibold text-lg">
-                  {formatCurrency(results.totalCost)}
+              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <span className="text-gray-700 text-sm">Ahorro Proyectado:</span>
+                <span className="font-semibold text-gray-900">
+                  {formatCurrency(inputs.ahorro)}
                 </span>
               </div>
-            </div>
-
-            <div className="mt-6 p-4 bg-blue-50 border-l-4 border-blue-600 rounded">
-              <div className="flex items-start gap-3">
-                <AlertCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
-                <div>
-                  <h4 className="font-semibold text-blue-900 mb-1">
-                    Interpretación
-                  </h4>
-                  <p className="text-blue-800 text-sm">{results.interpretation}</p>
-                </div>
+              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <span className="text-gray-700 text-sm">Beneficio Neto:</span>
+                <span className={`font-semibold ${results.roi > 0 ? "text-emerald-600" : "text-red-600"}`}>
+                  {formatCurrency(inputs.ahorro - inputs.inversion)}
+                </span>
               </div>
             </div>
           </CardContent>

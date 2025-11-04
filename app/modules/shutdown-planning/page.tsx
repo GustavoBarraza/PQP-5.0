@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PageContainer } from "@/components/layout/page-container";
 import { PageHeader } from "@/components/layout/page-header";
 import { StatsCard } from "@/components/cards/stats-card";
+import { ShutdownCostCalculator } from "@/components/calculators/shutdown-cost-calculator";
 import {
   Calendar,
   Clock,
@@ -18,6 +19,7 @@ import {
   AlertTriangle,
   CheckCircle,
   TrendingDown,
+  DollarSign,
 } from "lucide-react";
 import {
   ResponsiveContainer,
@@ -180,9 +182,10 @@ export default function ShutdownPlanningPage() {
 
         {/* Main Content Tabs */}
         <Tabs value={selectedTab} onValueChange={setSelectedTab} className="space-y-6">
-          <TabsList className="grid w-full max-w-md grid-cols-3">
+          <TabsList className="grid w-full max-w-2xl grid-cols-4">
             <TabsTrigger value="timeline">Timeline</TabsTrigger>
             <TabsTrigger value="resources">Recursos</TabsTrigger>
+            <TabsTrigger value="costs">Costos</TabsTrigger>
             <TabsTrigger value="optimization">Optimización</TabsTrigger>
           </TabsList>
 
@@ -301,6 +304,11 @@ export default function ShutdownPlanningPage() {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Costs Tab */}
+          <TabsContent value="costs" className="space-y-4">
+            <ShutdownCostCalculator />
           </TabsContent>
 
           {/* Optimization Tab */}
