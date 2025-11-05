@@ -34,7 +34,7 @@ export function Header() {
     { href: "/plans", label: "Planes y Precios" },
     { href: "/dashboard", label: "Plataforma" },
     { href: "/roi", label: "Calculadora ROI" },
-    { href: "/modules/marketplace", label: "Marketplace" },
+    { href: "/marketplace", label: "Marketplace" },
     { href: "/modules/circularidad", label: "Economía Circular" },
     { href: "/onboarding", label: "Recorrido" },  
   ];
