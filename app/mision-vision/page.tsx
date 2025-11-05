@@ -54,16 +54,16 @@ export default function MisionVisionPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-black-50">
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-primary to-primary/80 text-white">
+      <div className="bg-gradient-to-br from-primary to-primary/80 text-black">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20">
           <div className="text-center max-w-3xl mx-auto">
             <Badge variant="secondary" className="mb-4 bg-white/20 text-white border-white/30">
               Nuestra Razón de Ser
             </Badge>
             <h1 className="text-5xl font-bold mb-6">Misión, Visión y Valores</h1>
-            <p className="text-xl text-white/90">
+            <p className="text-xl text-black/90">
               Transformando la industria a través de la innovación tecnológica y el compromiso con la excelencia operacional
             </p>
           </div>
@@ -80,14 +80,14 @@ export default function MisionVisionPage() {
                 <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center">
                   <Target className="w-8 h-8 text-primary" />
                 </div>
-                <h2 className="text-3xl font-bold text-gray-900">Nuestra Misión</h2>
+                <h2 className="text-3xl font-bold text-black-900">Nuestra Misión</h2>
               </div>
-              <p className="text-lg text-gray-700 leading-relaxed mb-4">
+              <p className="text-lg text-black-700 leading-relaxed mb-4">
                 Empoderar a las industrias de energía e infraestructura con una plataforma integral que integra{" "}
                 <strong>calidad, productividad y personas (PQP)</strong>, facilitando la toma de decisiones basadas en
                 datos y promoviendo una cultura de mejora continua.
               </p>
-              <p className="text-lg text-gray-700 leading-relaxed">
+              <p className="text-lg text-black-700 leading-relaxed">
                 Nos comprometemos a optimizar operaciones, reducir costos y maximizar el impacto positivo en seguridad,
                 sostenibilidad y rentabilidad.
               </p>
@@ -101,14 +101,14 @@ export default function MisionVisionPage() {
                 <div className="w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center">
                   <Eye className="w-8 h-8 text-accent" />
                 </div>
-                <h2 className="text-3xl font-bold text-gray-900">Nuestra Visión</h2>
+                <h2 className="text-3xl font-bold tex-black-900">Nuestra Visión</h2>
               </div>
-              <p className="text-lg text-gray-700 leading-relaxed mb-4">
+              <p className="text-lg text-black-700 leading-relaxed mb-4">
                 Ser la plataforma líder en Latinoamérica para la gestión industrial inteligente, reconocida por nuestra
                 capacidad de transformar datos en valor y por fomentar ecosistemas colaborativos que impulsen la
                 competitividad y sostenibilidad del sector.
               </p>
-              <p className="text-lg text-gray-700 leading-relaxed">
+              <p className="text-lg text-black-700 leading-relaxed">
                 Aspiramos a convertirnos en el estándar de referencia para la Industria 5.0 en la región.
               </p>
             </CardContent>
@@ -121,8 +121,8 @@ export default function MisionVisionPage() {
             <Badge variant="outline" className="mb-4">
               Nuestros Principios
             </Badge>
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Valores que nos Definen</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <h2 className="text-4xl font-bold text-black-900 mb-4">Valores que nos Definen</h2>
+            <p className="text-lg text-black-600 max-w-2xl mx-auto">
               Los pilares fundamentales que guían cada decisión y acción en PQP 5.0
             </p>
           </div>
@@ -132,8 +132,8 @@ export default function MisionVisionPage() {
               <Card key={index} className="hover:shadow-lg transition-all hover:-translate-y-1">
                 <CardContent className="p-6">
                   <div className="mb-4">{valor.icon}</div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">{valor.title}</h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">{valor.description}</p>
+                  <h3 className="text-xl font-bold text-black-900 mb-3">{valor.title}</h3>
+                  <p className="text-black-600 text-sm leading-relaxed">{valor.description}</p>
                 </CardContent>
               </Card>
             ))}
@@ -143,11 +143,11 @@ export default function MisionVisionPage() {
         {/* Propuesta de Valor */}
         <div className="mb-16">
           <div className="text-center mb-12">
-            <Badge variant="outline" className="mb-4">
+            <Badge variant="essential" className="mb-4">
               ¿Por qué PQP 5.0?
             </Badge>
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Nuestra Propuesta de Valor</h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <h2 className="text-4xl font-bold text-black-900 mb-4">Nuestra Propuesta de Valor</h2>
+            <p className="text-lg text-black-600 max-w-3xl mx-auto">
               Soluciones concretas que generan impacto medible en sus operaciones
             </p>
           </div>
@@ -156,8 +156,8 @@ export default function MisionVisionPage() {
             {propuestasValor.map((propuesta, index) => (
               <Card key={index} className="border-l-4 border-l-primary hover:shadow-lg transition-shadow">
                 <CardContent className="p-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">{propuesta.title}</h3>
-                  <p className="text-gray-700 mb-4 leading-relaxed">{propuesta.description}</p>
+                  <h3 className="text-xl font-bold text-black-900 mb-3">{propuesta.title}</h3>
+                  <p className="text-black-700 mb-4 leading-relaxed">{propuesta.description}</p>
                   <div className="flex items-center gap-2 text-accent font-semibold">
                     <Zap className="w-5 h-5" />
                     <span className="text-sm">{propuesta.benefit}</span>
@@ -170,8 +170,8 @@ export default function MisionVisionPage() {
 
         {/* CTA Section */}
         <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl p-12 text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">¿Listo para Transformar su Operación?</h2>
-          <p className="text-lg text-gray-700 mb-8 max-w-2xl mx-auto">
+          <h2 className="text-3xl font-bold text-black-900 mb-4">¿Listo para Transformar su Operación?</h2>
+          <p className="text-lg text-black-700 mb-8 max-w-2xl mx-auto">
             Únase a las empresas líderes que ya están optimizando sus procesos con PQP 5.0
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
