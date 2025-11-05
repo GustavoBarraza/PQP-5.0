@@ -1,6 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+
+export const dynamic = 'force-dynamic';
 import {
     Card,
     CardContent,
@@ -59,7 +61,7 @@ export default function MarketplacePage() {
             </CardContent>
         </Card>
 
-        <div className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl p-8 text-center">
+        <div className="bg-gradient from-primary/10 to-primary/5 rounded-2xl p-8 text-center">
             <h2 className="text-2xl font-bold text-gray-900 mb-2">
             Conecta con proveedores certificados
             </h2>

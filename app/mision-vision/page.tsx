@@ -56,10 +56,10 @@ export default function MisionVisionPage() {
   return (
     <div className="min-h-screen bg-black-50">
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-primary to-primary/80 text-black">
+      <div className="bg-gradient from-primary to-primary/80 text-black">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20">
           <div className="text-center max-w-3xl mx-auto">
-            <Badge variant="secondary" className="mb-4 bg-white/20 text-white border-white/30">
+            <Badge variant="essential" className="mb-4 bg-white/20 text-white border-white/30">
               Nuestra Razón de Ser
             </Badge>
             <h1 className="text-5xl font-bold mb-6">Misión, Visión y Valores</h1>
@@ -118,7 +118,7 @@ export default function MisionVisionPage() {
         {/* Valores */}
         <div className="mb-16">
           <div className="text-center mb-12">
-            <Badge variant="outline" className="mb-4">
+            <Badge variant="essential" className="mb-4">
               Nuestros Principios
             </Badge>
             <h2 className="text-4xl font-bold text-black-900 mb-4">Valores que nos Definen</h2>
@@ -169,7 +169,7 @@ export default function MisionVisionPage() {
         </div>
 
         {/* CTA Section */}
-        <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl p-12 text-center">
+        <div className="bg-gradient from-primary/10 to-accent/10 rounded-2xl p-12 text-center">
           <h2 className="text-3xl font-bold text-black-900 mb-4">¿Listo para Transformar su Operación?</h2>
           <p className="text-lg text-black-700 mb-8 max-w-2xl mx-auto">
             Únase a las empresas líderes que ya están optimizando sus procesos con PQP 5.0
