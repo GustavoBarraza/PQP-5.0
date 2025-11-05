@@ -28,7 +28,7 @@ export default function CollaborationModulePage() {
               <LockIcon className="w-4 h-4 text-gray-600" />
             </div>
           </div>
-          <Badge variant="outline" className="mb-4">
+          <Badge variant="essential" className="mb-4">
             Requiere plan Essential o superior
           </Badge>
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Colaboración</h1>

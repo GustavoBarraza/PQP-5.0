@@ -6,12 +6,16 @@ import { Banner } from "@/components/ui/banner"
 import { ModuleCard } from "@/components/cards/module-card"
 import { MetricCard } from "@/components/cards/metric-card"
 import { UpsellModal } from "@/components/modals/upsell-modal"
-import { useAuth } from "@/lib/auth-context"
-import { ActivityIcon, AlertTriangleIcon, TrendingUpIcon, ClockIcon, UsersIcon } from "@/components/ui/icons"
+import {
+  ActivityIcon,
+  AlertTriangleIcon,
+  TrendingUpIcon,
+  ClockIcon,
+  UsersIcon,
+} from "@/components/ui/icons"
 
-export default function DashboardPage() {
+export default function DashboardGeneral() {
   const router = useRouter()
-  const { user } = useAuth()
   const [showUpsellModal, setShowUpsellModal] = useState(false)
 
   const modules = [
@@ -85,38 +89,24 @@ export default function DashboardPage() {
       icon: <ActivityIcon className="w-6 h-6" />,
       route: "/sst",
     },
-  ];
+  ]
 
   const handleModuleUnlock = () => setShowUpsellModal(true)
-  const handleViewPlans = () => {
-    setShowUpsellModal(false)
-    router.push("/plans")
-  }
-
+  const handleViewPlans = () => setShowUpsellModal(false)
   const handleContactSales = () => {
     setShowUpsellModal(false)
-    alert("Redirigiendo a contacto con ventas...")
+    alert("Disponible próximamente...")
   }
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
       {/* Banner superior */}
       <div className="bg-white border-b shadow-sm py-6 px-8 flex justify-between items-center">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Estado actual de la planta</h1>
-          <p className="text-gray-600">Parada programada en <span className="font-semibold text-green-600">22 días</span></p>
-        </div>
-        {user?.plan === "free" && (
-          <Banner
-            title="Plan Free activo"
-            description="Actualiza para desbloquear módulos avanzados y soporte técnico completo"
-            badge={{ text: "FREE", variant: "free" }}
-            action={{
-              label: "Ver planes",
-              onClick: () => router.push("/plans"),
-            }}
-          />
-        )}
+        <Banner
+          title="Dashboard General"
+          description="Visualización general del estado de la planta y rendimiento operativo"
+          badge={{ text: "PQP", variant: "essential" }}
+        />
       </div>
 
       <div className="flex flex-1">
@@ -180,7 +170,7 @@ export default function DashboardPage() {
         </aside>
       </div>
 
-      {/* Modal de upgrade */}
+      {/* Modal (puede servir para avisos futuros o premium) */}
       <UpsellModal
         isOpen={showUpsellModal}
         onClose={() => setShowUpsellModal(false)}
