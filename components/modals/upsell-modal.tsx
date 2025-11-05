@@ -33,9 +33,10 @@ export function UpsellModal({ isOpen, onClose, onViewPlans, onContactSales }: Up
       <div className="relative bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between">
           <h2 className="text-2xl font-bold text-gray-900">Desbloquea todo el potencial de PQP</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors" type="button">
-            <XIcon className="w-6 h-6" />
-          </button>
+          <button onClick={onClose} title="Cerrar">
+            <XIcon aria-label="Cerrar" />
+              </button>
+
         </div>
 
         <div className="p-6 space-y-6">
@@ -46,7 +47,7 @@ export function UpsellModal({ isOpen, onClose, onViewPlans, onContactSales }: Up
           <div className="space-y-4">
             {benefits.map((benefit, index) => (
               <div key={index} className="flex gap-4">
-                <div className="flex-shrink-0 w-6 h-6 rounded-full bg-success/10 flex items-center justify-center">
+                <div className="shrink-0 w-6 h-6 rounded-full bg-success/10 flex items-center justify-center">
                   <CheckIcon className="w-4 h-4 text-success" />
                 </div>
                 <div>

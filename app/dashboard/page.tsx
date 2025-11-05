@@ -1,182 +1,226 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { Banner } from "@/components/ui/banner"
-import { ModuleCard } from "@/components/cards/module-card"
-import { MetricCard } from "@/components/cards/metric-card"
-import { UpsellModal } from "@/components/modals/upsell-modal"
-import {
-  ActivityIcon,
-  AlertTriangleIcon,
-  TrendingUpIcon,
-  ClockIcon,
-  UsersIcon,
-} from "@/components/ui/icons"
+import { useState } from "react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { TrendingUp, DollarSign, AlertCircle } from "lucide-react";
 
-export default function DashboardGeneral() {
-  const router = useRouter()
-  const [showUpsellModal, setShowUpsellModal] = useState(false)
+export interface ROIInputs {
+  inversion: number; // moneda (USD)
+  roiTotalPercent?: number; // e.g., 140 means 140% total over horizon
+  horizonYears?: number; // e.g., 2 years
+}
 
-  const modules = [
-    {
-      id: "1",
-      title: "Registro",
-      description: "Información de planta, equipos y calendario",
-      icon: <ClockIcon className="w-6 h-6" />,
-      route: "/registro",
-    },
-    {
-      id: "2",
-      title: "Analítica",
-      description: "KPIs en tiempo real, comparativos históricos",
-      icon: <TrendingUpIcon className="w-6 h-6" />,
-      route: "/analitica",
-    },
-    {
-      id: "3",
-      title: "Marketplace",
-      description: "Compra de repuestos y servicios",
-      icon: <UsersIcon className="w-6 h-6" />,
-      route: "/marketplace",
-    },
-    {
-      id: "4",
-      title: "Circularidad",
-      description: "Gestión y valorización de residuos",
-      icon: <ActivityIcon className="w-6 h-6" />,
-      route: "/circularidad",
-    },
-    {
-      id: "5",
-      title: "Mantenimiento Predictivo",
-      description: "IoT, sensores y alertas tempranas",
-      icon: <AlertTriangleIcon className="w-6 h-6" />,
-      route: "/predictivo",
-    },
-    {
-      id: "6",
-      title: "Tablero de Innovación",
-      description: "Proyectos conjuntos y benchmarking",
-      icon: <ActivityIcon className="w-6 h-6" />,
-      route: "/innovacion",
-    },
-    {
-      id: "7",
-      title: "Academia PQP",
-      description: "Capacitación digital y certificaciones SENA",
-      icon: <UsersIcon className="w-6 h-6" />,
-      route: "/academia",
-    },
-    {
-      id: "8",
-      title: "Soporte Prioritario",
-      description: "Mesa técnica 24/7 y brigadas móviles",
-      icon: <ActivityIcon className="w-6 h-6" />,
-      route: "/soporte",
-    },
-    {
-      id: "9",
-      title: "Brigada de Emergencia",
-      description: "Activación inmediata operativa",
-      icon: <AlertTriangleIcon className="w-6 h-6" />,
-      route: "/brigada",
-    },
-    {
-      id: "10",
-      title: "Gestión SST y Ambiental",
-      description: "Cumplimiento ISO 14001, 45001",
-      icon: <ActivityIcon className="w-6 h-6" />,
-      route: "/sst",
-    },
-  ]
+export interface ROIResults {
+  roiTotalPercent: number;
+  roiAnnualPercent: number;
+  ahorroAnual: number;
+  ahorroTotal: number;
+  interpretation: string;
+  color: "green" | "red" | "yellow";
+}
 
-  const handleModuleUnlock = () => setShowUpsellModal(true)
-  const handleViewPlans = () => setShowUpsellModal(false)
-  const handleContactSales = () => {
-    setShowUpsellModal(false)
-    alert("Disponible próximamente...")
+/**
+ * calculateROI
+ * - inversion: capital invertido (USD)
+ * - roiTotalPercent: porcentaje total proyectado sobre la inversión en el horizonte (ej 140 = 140%)
+ * - horizonYears: horizonte en años donde se espera ese ROI total (ej 2)
+ *
+ * Devuelve: ROI total (%), ROI anual (%), ahorro anual (USD), ahorro total (USD)
+ */
+export function calculateROI({ inversion, roiTotalPercent = 140, horizonYears = 2 }: ROIInputs): ROIResults {
+  const roiTotal = roiTotalPercent; // e.g., 140
+  const roiAnnual = horizonYears > 0 ? roiTotal / horizonYears : roiTotal; // e.g., 70% anual
+
+  const ahorroTotal = (inversion * roiTotal) / 100;
+  const ahorroAnual = ahorroTotal / horizonYears;
+
+  // Interpretación simple
+  let interpretation = "";
+  let color: ROIResults["color"] = "yellow";
+  if (roiTotal > 100) {
+    interpretation = "Excelente: retorno muy superior a la inversión en el periodo.";
+    color = "green";
+  } else if (roiTotal > 50) {
+    interpretation = "Muy bueno: retorno positivo significativo.";
+    color = "green";
+  } else if (roiTotal > 0) {
+    interpretation = "Positivo: inversión produce ahorro.";
+    color = "yellow";
+  } else {
+    interpretation = "Negativo: no se recupera la inversión en el periodo.";
+    color = "red";
   }
 
+  return {
+    roiTotalPercent: roiTotal,
+    roiAnnualPercent: roiAnnual,
+    ahorroAnual,
+    ahorroTotal,
+    interpretation,
+    color,
+  };
+}
+
+export function ROICalculator() {
+  const [inversion, setInversion] = useState<number>(300_000_000);
+  const [roiTotalPercent, setRoiTotalPercent] = useState<number>(140);
+  const [horizonYears, setHorizonYears] = useState<number>(2);
+  const [results, setResults] = useState<ROIResults | null>(null);
+
+  const presets = [
+    { label: "140% en 2 años (70% anual)", total: 140, years: 2 },
+  ];
+
+  const runCalc = () => {
+    if (!inversion || inversion <= 0) return;
+    const r = calculateROI({ inversion, roiTotalPercent, horizonYears });
+    setResults(r);
+  };
+
+  const reset = () => {
+    setInversion(300_000_000);
+    setRoiTotalPercent(140);
+    setHorizonYears(2);
+    setResults(null);
+  };
+
+  const formatCurrency = (value: number) =>
+    new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(value);
+
+  const formatPercent = (value: number) => `${value.toFixed(2)}%`;
+
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
-      {/* Banner superior */}
-      <div className="bg-white border-b shadow-sm py-6 px-8 flex justify-between items-center">
-        <Banner
-          title="Dashboard General"
-          description="Visualización general del estado de la planta y rendimiento operativo"
-          badge={{ text: "PQP", variant: "essential" }}
-        />
-      </div>
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <DollarSign className="w-5 h-5 text-cyan-700" />
+            Calculadora de ROI (Inversionistas)
+          </CardTitle>
+          <CardDescription>Introduce la inversión y selecciona el preset o define tu propio porcentaje. Todos los cálculos en USD.</CardDescription>
+        </CardHeader>
 
-      <div className="flex flex-1">
-        {/* Sección central */}
-        <main className="flex-1 p-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 overflow-y-auto">
-          {modules.map((mod) => (
-            <ModuleCard
-              key={mod.id}
-              title={mod.title}
-              description={mod.description}
-              icon={mod.icon}
-              route={mod.route}
-              locked={false}
-              onUnlock={handleModuleUnlock}
-            />
-          ))}
-        </main>
-
-        {/* Lateral derecho */}
-        <aside className="w-80 bg-white border-l shadow-sm p-6 flex flex-col gap-6 sticky top-0 h-screen overflow-y-auto">
-          <section>
-            <h2 className="text-lg font-bold mb-2">⚠️ Alertas</h2>
-            <ul className="text-sm text-gray-700 space-y-1">
-              <li>Sensor de presión fuera de rango</li>
-              <li>Mantenimiento pendiente: bomba #3</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2 className="text-lg font-bold mb-2">📋 Tareas pendientes</h2>
-            <ul className="text-sm text-gray-700 space-y-1">
-              <li>Actualizar calendario de parada</li>
-              <li>Registrar nuevos equipos</li>
-              <li>Validar stock de repuestos</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2 className="text-lg font-bold mb-2">💰 Ahorro proyectado</h2>
-            <p className="text-3xl font-bold text-green-600">$ 18.240.000</p>
-            <p className="text-sm text-gray-500">vs mes anterior: +6%</p>
-          </section>
-
-          <section>
-            <h2 className="text-lg font-bold mb-2">📊 KPIs</h2>
-            <div className="grid grid-cols-2 gap-4">
-              <MetricCard
-                title="Disponibilidad"
-                value="97%"
-                change={{ value: "+1.2%", trend: "up" }}
-                icon={<TrendingUpIcon className="w-5 h-5" />}
-              />
-              <MetricCard
-                title="Paradas"
-                value="3"
-                change={{ value: "-2", trend: "down" }}
-                icon={<ClockIcon className="w-5 h-5" />}
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
+              <Label htmlFor="inversion">Inversión inicial (USD)</Label>
+              <Input
+                id="inversion"
+                type="number"
+                value={inversion}
+                onChange={(e) => setInversion(Number(e.target.value) || 0)}
+                placeholder="300000000"
+                className="text-lg"
+                aria-label="Inversión inicial en dólares"
               />
             </div>
-          </section>
-        </aside>
-      </div>
 
-      {/* Modal (puede servir para avisos futuros o premium) */}
-      <UpsellModal
-        isOpen={showUpsellModal}
-        onClose={() => setShowUpsellModal(false)}
-        onViewPlans={handleViewPlans}
-        onContactSales={handleContactSales}
-      />
+            <div>
+              <Label htmlFor="roiTotal">ROI total proyectado (%)</Label>
+              <Input
+                id="roiTotal"
+                type="number"
+                value={roiTotalPercent}
+                onChange={(e) => setRoiTotalPercent(Number(e.target.value) || 0)}
+                placeholder="140"
+                aria-label="ROI total proyectado en porcentaje"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="years">Horizonte (años)</Label>
+              <Input
+                id="years"
+                type="number"
+                value={horizonYears}
+                onChange={(e) => setHorizonYears(Number(e.target.value) || 0)}
+                placeholder="2"
+                aria-label="Horizonte de inversión en años"
+              />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Label>Presets</Label>
+              <div className="flex gap-2 flex-wrap">
+                {presets.map((p) => (
+                  <Button
+                    key={p.label}
+                    variant={p.total === roiTotalPercent && p.years === horizonYears ? "default" : "outline"}
+                    onClick={() => {
+                      setRoiTotalPercent(p.total);
+                      setHorizonYears(p.years);
+                    }}
+                    className="text-sm"
+                  >
+                    {p.label}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex gap-3 mt-6">
+            <Button onClick={runCalc} className="bg-cyan-800 hover:bg-cyan-900">
+              <TrendingUp className="w-4 h-4 mr-2" /> Calcular
+            </Button>
+            <Button variant="outline" onClick={reset}>
+              Limpiar
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {results && (
+        <Card className={`border-2 ${results.color === "green" ? "border-emerald-500" : results.color === "red" ? "border-red-500" : "border-yellow-500"}`}>
+          <CardHeader>
+            <CardTitle className="flex items-center justify-between">
+              <span>Resultados (USD)</span>
+              <Badge className={`text-sm px-3 py-1 ${results.color === "green" ? "bg-emerald-500 text-white" : results.color === "red" ? "bg-red-500 text-white" : "bg-yellow-500 text-white"}`}>
+                {results.roiTotalPercent >= 100 ? "ROI Alto" : results.roiTotalPercent > 0 ? "ROI Positivo" : "ROI Negativo"}
+              </Badge>
+            </CardTitle>
+          </CardHeader>
+
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <div className="text-sm text-gray-600">Inversión Inicial</div>
+                <div className="text-xl font-semibold">{formatCurrency(inversion)}</div>
+              </div>
+
+              <div className={`p-4 rounded-lg ${results.color === "green" ? "bg-emerald-50" : results.color === "red" ? "bg-rose-50" : "bg-amber-50"}`}>
+                <div className="text-sm text-gray-600">Ahorro Anual estimado (USD)</div>
+                <div className="text-xl font-semibold">{formatCurrency(results.ahorroAnual)}</div>
+                <div className="text-xs text-gray-500">({formatPercent(results.roiAnnualPercent)} anual)</div>
+              </div>
+
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <div className="text-sm text-gray-600">Ahorro Total (USD) - horizonte</div>
+                <div className="text-xl font-semibold">{formatCurrency(results.ahorroTotal)}</div>
+                <div className="text-xs text-gray-500">({formatPercent(results.roiTotalPercent)} total)</div>
+              </div>
+            </div>
+
+            <div className="mt-6 p-4 bg-white rounded-lg border">
+              <div className="flex items-start gap-3">
+                <div className={`p-2 rounded-full ${results.color === "green" ? "bg-emerald-100 text-emerald-700" : results.color === "red" ? "bg-red-100 text-red-700" : "bg-yellow-100 text-yellow-700"}`}>
+                  <AlertCircle className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="text-sm font-medium">{results.interpretation}</div>
+                  <div className="text-xs text-gray-500 mt-1">
+                    ROI anual estimado: <strong>{formatPercent(results.roiAnnualPercent)}</strong>. ROI total en {horizonYears} años: <strong>{formatPercent(results.roiTotalPercent)}</strong>.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
-  )
+  );
 }

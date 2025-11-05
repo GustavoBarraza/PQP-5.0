@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { TrendingUp, DollarSign, AlertCircle } from "lucide-react";
 
 export interface ROIInputs {
-  inversion: number; // moneda (COP)
+  inversion: number; // moneda (USD)
   roiTotalPercent?: number; // e.g., 140 means 140% total over horizon
   horizonYears?: number; // e.g., 2 years
 }
@@ -25,11 +25,11 @@ export interface ROIResults {
 
 /**
  * calculateROI
- * - inversion: capital invertido (COP)
+ * - inversion: capital invertido (USD)
  * - roiTotalPercent: porcentaje total proyectado sobre la inversión en el horizonte (ej 140 = 140%)
  * - horizonYears: horizonte en años donde se espera ese ROI total (ej 2)
  *
- * Devuelve: ROI total (%), ROI anual (%), ahorro anual (COP), ahorro total (COP)
+ * Devuelve: ROI total (%), ROI anual (%), ahorro anual (USD), ahorro total (USD)
  */
 export function calculateROI({ inversion, roiTotalPercent = 140, horizonYears = 2 }: ROIInputs): ROIResults {
   const roiTotal = roiTotalPercent; // e.g., 140
@@ -73,8 +73,6 @@ export function ROICalculator() {
 
   const presets = [
     { label: "140% en 2 años (70% anual)", total: 140, years: 2 },
-    { label: "100% en 1 año (100% anual)", total: 100, years: 1 },
-    { label: "50% en 1 año (50% anual)", total: 50, years: 1 },
   ];
 
   const runCalc = () => {
@@ -91,7 +89,7 @@ export function ROICalculator() {
   };
 
   const formatCurrency = (value: number) =>
-    new Intl.NumberFormat("es-CO", { style: "currency", currency: "COP", maximumFractionDigits: 0 }).format(value);
+    new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(value);
 
   const formatPercent = (value: number) => `${value.toFixed(2)}%`;
 
@@ -103,13 +101,13 @@ export function ROICalculator() {
             <DollarSign className="w-5 h-5 text-cyan-700" />
             Calculadora de ROI (Inversionistas)
           </CardTitle>
-          <CardDescription>Introduce la inversión y selecciona el preset o define tu propio porcentaje.</CardDescription>
+          <CardDescription>Introduce la inversión y selecciona el preset o define tu propio porcentaje. Todos los cálculos en USD.</CardDescription>
         </CardHeader>
 
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
-              <Label htmlFor="inversion">Inversión inicial (COP)</Label>
+              <Label htmlFor="inversion">Inversión inicial (USD)</Label>
               <Input
                 id="inversion"
                 type="number"
@@ -117,6 +115,7 @@ export function ROICalculator() {
                 onChange={(e) => setInversion(Number(e.target.value) || 0)}
                 placeholder="300000000"
                 className="text-lg"
+                aria-label="Inversión inicial en dólares"
               />
             </div>
 
@@ -127,6 +126,8 @@ export function ROICalculator() {
                 type="number"
                 value={roiTotalPercent}
                 onChange={(e) => setRoiTotalPercent(Number(e.target.value) || 0)}
+                placeholder="140"
+                aria-label="ROI total proyectado en porcentaje"
               />
             </div>
 
@@ -137,6 +138,8 @@ export function ROICalculator() {
                 type="number"
                 value={horizonYears}
                 onChange={(e) => setHorizonYears(Number(e.target.value) || 0)}
+                placeholder="2"
+                aria-label="Horizonte de inversión en años"
               />
             </div>
 
@@ -175,7 +178,7 @@ export function ROICalculator() {
         <Card className={`border-2 ${results.color === "green" ? "border-emerald-500" : results.color === "red" ? "border-red-500" : "border-yellow-500"}`}>
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
-              <span>Resultados</span>
+              <span>Resultados (USD)</span>
               <Badge className={`text-sm px-3 py-1 ${results.color === "green" ? "bg-emerald-500 text-white" : results.color === "red" ? "bg-red-500 text-white" : "bg-yellow-500 text-white"}`}>
                 {results.roiTotalPercent >= 100 ? "ROI Alto" : results.roiTotalPercent > 0 ? "ROI Positivo" : "ROI Negativo"}
               </Badge>
@@ -189,14 +192,14 @@ export function ROICalculator() {
                 <div className="text-xl font-semibold">{formatCurrency(inversion)}</div>
               </div>
 
-              <div className="p-4 rounded-lg" style={{ background: results.color === "green" ? "#ecfdf5" : results.color === "red" ? "#fff1f2" : "#fffbeb" }}>
-                <div className="text-sm text-gray-600">Ahorro Anual estimado</div>
+              <div className={`p-4 rounded-lg ${results.color === "green" ? "bg-emerald-50" : results.color === "red" ? "bg-rose-50" : "bg-amber-50"}`}>
+                <div className="text-sm text-gray-600">Ahorro Anual estimado (USD)</div>
                 <div className="text-xl font-semibold">{formatCurrency(results.ahorroAnual)}</div>
                 <div className="text-xs text-gray-500">({formatPercent(results.roiAnnualPercent)} anual)</div>
               </div>
 
               <div className="p-4 bg-gray-50 rounded-lg">
-                <div className="text-sm text-gray-600">Ahorro Total (horizonte)</div>
+                <div className="text-sm text-gray-600">Ahorro Total (USD) - horizonte</div>
                 <div className="text-xl font-semibold">{formatCurrency(results.ahorroTotal)}</div>
                 <div className="text-xs text-gray-500">({formatPercent(results.roiTotalPercent)} total)</div>
               </div>
@@ -220,4 +223,8 @@ export function ROICalculator() {
       )}
     </div>
   );
+}
+
+export default function DashboardPage() {
+  return <ROICalculator />;
 }
